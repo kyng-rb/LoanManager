@@ -1,6 +1,8 @@
 using LoanManager.Application.Common.Interfaces.Authentication;
+using LoanManager.Application.Common.Interfaces.Persistence;
 using LoanManager.Application.Common.Interfaces.Services;
 using LoanManager.Infrastructure.Authentication;
+using LoanManager.Infrastructure.Persistence;
 using LoanManager.Infrastructure.Services;
 
 using Microsoft.Extensions.Configuration;
@@ -16,6 +18,8 @@ public static class DependencyInjection
 
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddSingleton<IJWTTokenGenerator, JWTTokenGenerator>();
+
+        services.AddScoped<IUserRepository, UserRepository>();
         return services;
     }
 }

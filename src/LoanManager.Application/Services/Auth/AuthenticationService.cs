@@ -1,33 +1,50 @@
 using LoanManager.Application.Common.Interfaces.Authentication;
+using LoanManager.Application.Common.Interfaces.Persistence;
+using LoanManager.Domain.Entities;
 
 namespace LoanManager.Application.Services.Auth;
 
 public class AuthenticationService : IAuthenticationService
 {
     private readonly IJWTTokenGenerator _jWTTokenGenerator;
-
-    public AuthenticationService(IJWTTokenGenerator jWTTokenGenerator)
+    private readonly IUserRepository _userRepository;
+    public AuthenticationService(IJWTTokenGenerator jWTTokenGenerator, IUserRepository userRepository)
     {
         _jWTTokenGenerator = jWTTokenGenerator;
+        _userRepository = userRepository;
     }
 
     AuthenticationResult IAuthenticationService.Login(string email, string password)
-        => new(Id: Guid.NewGuid(),
-               FirstName: "Name",
-               LastName: "Last",
-               Email: email,
-               Token: Guid.NewGuid().ToString());
+    {
+        if (_userRepository.GetUserByEmail(email) is not User user)
+            throw new Exception("User does not exists.");
+
+        if (user.Password != password)
+            throw new Exception("Password does not match");
+
+        var token = _jWTTokenGenerator.Generate(user);
+
+        return new(user: user,
+                   Token: token);
+    }
 
     AuthenticationResult IAuthenticationService.Register(string firstName, string lastName, string email, string password)
     {
-        var userId = Guid.NewGuid();
+        if (_userRepository.GetUserByEmail(email) is not null)
+            throw new Exception("User already exists.");
 
-        var token = _jWTTokenGenerator.Generate(id: userId, firstName, lastName);
+        var user = new User()
+        {
+            Email = email,
+            FirstName = firstName,
+            LastName = lastName,
+            Password = password
+        };
 
-        return new(Id: userId,
-                   FirstName: firstName,
-                   LastName: lastName,
-                   Email: email,
+        _userRepository.Add(user);
+        var token = _jWTTokenGenerator.Generate(user);
+
+        return new(user: user,
                    Token: token);
     }
 }

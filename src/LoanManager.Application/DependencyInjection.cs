@@ -8,7 +8,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddSingleton<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
         return services;
     }
 }

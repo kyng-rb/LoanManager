@@ -7,6 +7,7 @@ using LoanManager.Application.Common.Interfaces.Services;
 
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using LoanManager.Domain.Entities;
 
 namespace LoanManager.Infrastructure.Authentication;
 
@@ -21,7 +22,7 @@ public class JWTTokenGenerator : IJWTTokenGenerator
         _dateTimeProvider = dateTimeProvider;
     }
 
-    public string Generate(Guid id, string firstName, string lastName)
+    public string Generate(User user)
     {
         var signinCredentials = new SigningCredentials(
             new SymmetricSecurityKey(
@@ -30,9 +31,9 @@ public class JWTTokenGenerator : IJWTTokenGenerator
 
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, id.ToString()),
-            new Claim(JwtRegisteredClaimNames.GivenName, firstName),
-            new Claim(JwtRegisteredClaimNames.FamilyName, lastName),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
+            new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 

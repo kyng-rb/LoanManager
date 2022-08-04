@@ -1,7 +1,6 @@
+using LoanManager.Domain.Entities;
+
 namespace LoanManager.Application.Services.Auth;
 
-public record AuthenticationResult(Guid Id,
-                                   string FirstName,
-                                   string LastName,
-                                   string Email,
+public record AuthenticationResult(User user,
                                    string Token);
