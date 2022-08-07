@@ -1,7 +1,11 @@
 using System.Net;
 
-using LoanManager.Application.Services.Auth;
+using LoanManager.Application.Authentication.Commands.Register;
+using LoanManager.Application.Authentication.Common;
+using LoanManager.Application.Authentication.Queries.Login;
 using LoanManager.Presentation.Contracts.Auth;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,21 +14,24 @@ namespace LoanManager.Presentation.API.Controllers;
 [Route("api/auth")]
 public class AuthenticationController : ApiController
 {
-    private readonly IAuthenticationService _authService;
+    private readonly ISender _sender;
 
-    public AuthenticationController(IAuthenticationService authService)
+    public AuthenticationController(ISender mediator)
     {
-        _authService = authService;
+        _sender = mediator;
     }
 
     [HttpPost]
     [Route("register")]
-    public IActionResult Register(RegisterRequest request)
+    public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var serviceOutput = _authService.Register(request.FirstName,
-                                                  request.LastName,
-                                                  request.Email,
-                                                  request.Password);
+        var command = new RegisterCommand(
+            request.FirstName,
+            request.LastName,
+            request.Email,
+            request.Password);
+
+        var serviceOutput = await _sender.Send(command);
         return serviceOutput.Match(
             result => Ok(MapResult(result)),
             errors => Problem(errors));
@@ -32,10 +39,14 @@ public class AuthenticationController : ApiController
 
     [HttpPost]
     [Route("login")]
-    public IActionResult Register(LoginRequest request)
+    public async Task<IActionResult> Login(LoginRequest request)
     {
-        var serviceOutput = _authService.Login(request.Email,
-                                               request.Password);
+        var query = new RegisterQuery(
+            request.Email,
+            request.Password);
+
+        var serviceOutput = await _sender.Send(query);
+
         return serviceOutput.Match(
             result => Ok(MapResult(result)),
             errors => Problem(errors));
