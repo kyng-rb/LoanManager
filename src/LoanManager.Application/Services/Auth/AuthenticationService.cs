@@ -1,6 +1,9 @@
+using ErrorOr;
+
 using LoanManager.Application.Common.Interfaces.Authentication;
 using LoanManager.Application.Common.Interfaces.Persistence;
 using LoanManager.Domain.Entities;
+using LoanManager.Domain.Common.Errors;
 
 namespace LoanManager.Application.Services.Auth;
 
@@ -14,24 +17,25 @@ public class AuthenticationService : IAuthenticationService
         _userRepository = userRepository;
     }
 
-    AuthenticationResult IAuthenticationService.Login(string email, string password)
+    public ErrorOr<AuthenticationResult> Login(string email, string password)
     {
         if (_userRepository.GetUserByEmail(email) is not User user)
-            throw new Exception("User does not exists.");
+            return Errors.Authentication.InvalidCredentials;
 
         if (user.Password != password)
-            throw new Exception("Password does not match");
+            return Errors.Authentication.InvalidCredentials;
 
         var token = _jWTTokenGenerator.Generate(user);
 
-        return new(user: user,
-                   Token: token);
+        return new AuthenticationResult(
+            User: user,
+            Token: token);
     }
 
-    AuthenticationResult IAuthenticationService.Register(string firstName, string lastName, string email, string password)
+    public ErrorOr<AuthenticationResult> Register(string firstName, string lastName, string email, string password)
     {
         if (_userRepository.GetUserByEmail(email) is not null)
-            throw new Exception("User already exists.");
+            return Errors.User.DuplicateEmail;
 
         var user = new User()
         {
@@ -44,7 +48,8 @@ public class AuthenticationService : IAuthenticationService
         _userRepository.Add(user);
         var token = _jWTTokenGenerator.Generate(user);
 
-        return new(user: user,
-                   Token: token);
+        return new AuthenticationResult(
+            User: user,
+            Token: token);
     }
 }

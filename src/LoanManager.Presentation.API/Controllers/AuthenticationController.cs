@@ -1,3 +1,4 @@
+using System.Net;
 using LoanManager.Presentation.Contracts.Auth;
 using LoanManager.Application.Services.Auth;
 
@@ -24,7 +25,9 @@ public class AuthenticationController : ControllerBase
                                                   request.LastName,
                                                   request.Email,
                                                   request.Password);
-        return Ok(serviceOutput);
+        return serviceOutput.MatchFirst(
+            result => Ok(MapResult(result)),
+            error => Problem(statusCode: (int)HttpStatusCode.Conflict, detail: error.Description));
     }
 
     [HttpPost]
@@ -33,6 +36,15 @@ public class AuthenticationController : ControllerBase
     {
         var serviceOutput = _authService.Login(request.Email,
                                                request.Password);
-        return Ok(serviceOutput);
+        return serviceOutput.MatchFirst(
+            result => Ok(MapResult(result)),
+            error => Problem(statusCode: (int)HttpStatusCode.Conflict, detail: error.Description));
     }
+
+    private AuthResponse MapResult(AuthenticationResult result) => new AuthResponse(
+        Id: result.User.Id,
+        FirstName: result.User.FirstName,
+        LastName: result.User.LastName,
+        Email: result.User.LastName,
+        Token: result.Token);
 }
