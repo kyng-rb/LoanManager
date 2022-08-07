@@ -1,14 +1,14 @@
 using System.Net;
-using LoanManager.Presentation.Contracts.Auth;
+
 using LoanManager.Application.Services.Auth;
+using LoanManager.Presentation.Contracts.Auth;
 
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoanManager.Presentation.API.Controllers;
 
 [Route("api/auth")]
-[ApiController]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController : ApiController
 {
     private readonly IAuthenticationService _authService;
 
@@ -25,9 +25,9 @@ public class AuthenticationController : ControllerBase
                                                   request.LastName,
                                                   request.Email,
                                                   request.Password);
-        return serviceOutput.MatchFirst(
+        return serviceOutput.Match(
             result => Ok(MapResult(result)),
-            error => Problem(statusCode: (int)HttpStatusCode.Conflict, detail: error.Description));
+            errors => Problem(errors));
     }
 
     [HttpPost]
@@ -36,12 +36,12 @@ public class AuthenticationController : ControllerBase
     {
         var serviceOutput = _authService.Login(request.Email,
                                                request.Password);
-        return serviceOutput.MatchFirst(
+        return serviceOutput.Match(
             result => Ok(MapResult(result)),
-            error => Problem(statusCode: (int)HttpStatusCode.Conflict, detail: error.Description));
+            errors => Problem(errors));
     }
 
-    private AuthResponse MapResult(AuthenticationResult result) => new AuthResponse(
+    private AuthResponse MapResult(AuthenticationResult result) => new(
         Id: result.User.Id,
         FirstName: result.User.FirstName,
         LastName: result.User.LastName,
