@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Diagnostics;
-
-using static System.Net.Mime.MediaTypeNames;
+using LoanManager.Presentation.API.Common.Mappings;
 
 namespace LoanManager.Presentation.API;
 
@@ -11,6 +9,7 @@ public static class DependencyInjection
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+        services.AddMappings();
         return services;
     }
 
