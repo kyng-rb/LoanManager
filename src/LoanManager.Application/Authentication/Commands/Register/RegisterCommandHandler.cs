@@ -1,6 +1,5 @@
 using ErrorOr;
 
-using LoanManager.Application.Authentication.Commands.Register;
 using LoanManager.Application.Authentication.Common;
 using LoanManager.Application.Common.Interfaces.Authentication;
 using LoanManager.Application.Common.Interfaces.Persistence;
@@ -13,12 +12,13 @@ namespace LoanManager.Application.Authentication.Commands.Register;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
 {
-    private readonly IJWTTokenGenerator _jWTTokenGenerator;
+    private readonly IJWTTokenGenerator _jWtTokenGenerator;
     private readonly IUserRepository _userRepository;
 
-    public RegisterCommandHandler(IJWTTokenGenerator jWTTokenGenerator, IUserRepository userRepository)
+    public RegisterCommandHandler(IJWTTokenGenerator jWtTokenGenerator,
+                                  IUserRepository userRepository)
     {
-        _jWTTokenGenerator = jWTTokenGenerator;
+        _jWtTokenGenerator = jWtTokenGenerator;
         _userRepository = userRepository;
     }
 
@@ -36,7 +36,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<A
         };
 
         _userRepository.Add(user);
-        var token = _jWTTokenGenerator.Generate(user);
+        var token = _jWtTokenGenerator.Generate(user);
 
         return new AuthenticationResult(
             User: user,

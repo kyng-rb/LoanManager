@@ -1,3 +1,4 @@
 1 - To learn about when to use Scoped vs Singleton and Transient in IoC
 2 - To learn about how to test controllers
 3 - To learn to configure ILogger
+4 - Unit Tests, Integration Tests and Functional Tests
