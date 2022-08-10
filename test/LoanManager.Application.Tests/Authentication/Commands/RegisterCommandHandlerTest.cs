@@ -5,28 +5,26 @@ using FluentAssertions;
 using LoanManager.Application.Authentication.Commands.Register;
 using LoanManager.Application.Common.Interfaces.Authentication;
 using LoanManager.Application.Common.Interfaces.Persistence;
+using LoanManager.Application.Tests.Authentication.Common;
+using LoanManager.Application.Tests.Common.Mocks.Persistence;
 
 namespace LoanManager.Application.Tests.Authentication.Commands;
 
 public class RegisterCommandHandlerTest
 {
-    private readonly RegisterCommandHandler _handler;
-
-    public RegisterCommandHandlerTest(IJWTTokenGenerator jWtTokenGenerator,
-                                      IUserRepository userRepository)
-    {
-        _handler = new RegisterCommandHandler(jWtTokenGenerator: jWtTokenGenerator, 
-                                              userRepository: userRepository);
-    }
-    
     [Fact]
     public async Task Should_Register_With_Valid_Input()
     {
         //arrange
+        var tokenGenerator = JWTTokenGeneratorFaker.GetMock();
+        var userRepository = new UserRepositoryMock();
+        var handler = new RegisterCommandHandler(jWtTokenGenerator: tokenGenerator, 
+                                                 userRepository: userRepository);
+        
         var command = RegisterCommandFaker.Fake();
 
         //act
-        var sut = await _handler.Handle(command, default);
+        var sut = await handler.Handle(command, default);
 
         //assert
         sut.IsError.Should().BeFalse();
@@ -43,12 +41,18 @@ public class RegisterCommandHandlerTest
     public async Task Should_Fail_With_Duplicated_Email()
     {
         //arrange
+        
+        var tokenGenerator = JWTTokenGeneratorFaker.GetMock();
+        var userRepository = new UserRepositoryMock();
+        var handler = new RegisterCommandHandler(jWtTokenGenerator: tokenGenerator, 
+                                                 userRepository: userRepository);
+        
         var command = RegisterCommandFaker.Fake();
         var secondCommand = RegisterCommandFaker.Fake() with { Email = command.Email };
         
         //act
-        _ = await _handler.Handle(command, default);
-        var sut = await _handler.Handle(secondCommand, default);
+        _ = await handler.Handle(command, default);
+        var sut = await handler.Handle(secondCommand, default);
         
         //assert
         sut.IsError.Should().BeTrue();

@@ -15,9 +15,9 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
     private readonly IJWTTokenGenerator _jWTTokenGenerator;
     private readonly IUserRepository _userRepository;
 
-    public LoginQueryHandler(IJWTTokenGenerator jWTTokenGenerator, IUserRepository userRepository)
+    public LoginQueryHandler(IJWTTokenGenerator jWtTokenGenerator, IUserRepository userRepository)
     {
-        _jWTTokenGenerator = jWTTokenGenerator;
+        _jWTTokenGenerator = jWtTokenGenerator;
         _userRepository = userRepository;
     }
 

@@ -3,9 +3,9 @@ using LoanManager.Domain.Entities;
 
 using Moq;
 
-namespace LoanManager.Application.Tests.Common.Mocks.Authentication;
+namespace LoanManager.Application.Tests.Authentication.Common;
 
-public class JWTTokenGeneratorMock
+public static class JWTTokenGeneratorFaker
 {
     public static IJWTTokenGenerator GetMock()
     {
