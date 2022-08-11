@@ -1,7 +1,4 @@
-using System.Net;
-
 using LoanManager.Application.Authentication.Commands.Register;
-using LoanManager.Application.Authentication.Common;
 using LoanManager.Application.Authentication.Queries.Login;
 using LoanManager.Presentation.Contracts.Auth;
 

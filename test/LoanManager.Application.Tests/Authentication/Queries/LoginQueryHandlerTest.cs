@@ -4,10 +4,7 @@ using ErrorOr;
 
 using FluentAssertions;
 
-using LoanManager.Application.Authentication.Commands.Register;
 using LoanManager.Application.Authentication.Queries.Login;
-using LoanManager.Application.Common.Interfaces.Authentication;
-using LoanManager.Application.Common.Interfaces.Persistence;
 using LoanManager.Application.Tests.Authentication.Common;
 using LoanManager.Application.Tests.Common.Mocks.Persistence;
 using LoanManager.Domain.Entities;
