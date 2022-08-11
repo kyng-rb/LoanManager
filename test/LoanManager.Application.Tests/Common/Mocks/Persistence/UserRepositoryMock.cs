@@ -5,15 +5,15 @@ namespace LoanManager.Application.Tests.Common.Mocks.Persistence;
 
 public class UserRepositoryMock : IUserRepository
 {
-    private readonly static List<User> Users = new();
+    private readonly List<User> _users = new();
 
     public void Add(User user)
     {
-        Users.Add(user);
+        _users.Add(user);
     }
 
     public User? GetUserByEmail(string email)
     {
-        return Users.SingleOrDefault(u => u.Email == email);
+        return _users.SingleOrDefault(u => u.Email == email);
     }
 }
