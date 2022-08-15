@@ -10,7 +10,7 @@ public class UserRepositoryMock : IUserRepository
     
     public UserRepositoryMock(User user)
     {
-        _users = new List<User>()
+        _users = new List<User>
         {
             user
         };

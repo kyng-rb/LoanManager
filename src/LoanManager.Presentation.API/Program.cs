@@ -1,6 +1,6 @@
-using LoanManager.Presentation.API;
-using LoanManager.Infrastructure;
 using LoanManager.Application;
+using LoanManager.Infrastructure;
+using LoanManager.Presentation.API;
 
 var builder = WebApplication.CreateBuilder(args);
 {

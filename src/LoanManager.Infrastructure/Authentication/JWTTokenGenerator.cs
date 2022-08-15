@@ -1,13 +1,13 @@
-using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 using LoanManager.Application.Common.Interfaces.Authentication;
 using LoanManager.Application.Common.Interfaces.Services;
+using LoanManager.Domain.Entities;
 
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using LoanManager.Domain.Entities;
 
 namespace LoanManager.Infrastructure.Authentication;
 

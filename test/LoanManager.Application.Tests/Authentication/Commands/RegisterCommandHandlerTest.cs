@@ -42,7 +42,7 @@ public class RegisterCommandHandlerTest
         //arrange
         
         var fakeData        = RegisterCommandFaker.Fake();
-        var seedUser = new User()
+        var seedUser = new User
         {
             Email     = fakeData.Email,
             Id        = Guid.NewGuid(),
