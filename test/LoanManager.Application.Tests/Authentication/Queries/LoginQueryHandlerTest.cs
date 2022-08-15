@@ -33,7 +33,6 @@ public class LoginQueryHandlerTest
         sut.Errors.First().Type.Should().Be(ErrorType.Validation);
     }
 
-
     [Fact]
     public async Task Should_Fail_With_Wrong_Password()
     {
