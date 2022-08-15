@@ -5,6 +5,7 @@ using FluentAssertions;
 using LoanManager.Application.Authentication.Commands.Register;
 using LoanManager.Application.Tests.Authentication.Common;
 using LoanManager.Application.Tests.Common.Mocks.Persistence;
+using LoanManager.Domain.Entities;
 
 namespace LoanManager.Application.Tests.Authentication.Commands;
 
@@ -40,17 +41,25 @@ public class RegisterCommandHandlerTest
     {
         //arrange
         
+        var fakeData        = RegisterCommandFaker.Fake();
+        var seedUser = new User()
+        {
+            Email     = fakeData.Email,
+            Id        = Guid.NewGuid(),
+            Password  = fakeData.Password,
+            FirstName = fakeData.FirstName,
+            LastName  = fakeData.LastName
+        };
+        
+        var userRepository = new UserRepositoryMock(seedUser);
         var tokenGenerator = JWTTokenGeneratorFaker.GetMock();
-        var userRepository = new UserRepositoryMock();
         var handler = new RegisterCommandHandler(jWtTokenGenerator: tokenGenerator, 
                                                  userRepository: userRepository);
         
-        var command = RegisterCommandFaker.Fake();
-        var secondCommand = RegisterCommandFaker.Fake() with { Email = command.Email };
+        var command = RegisterCommandFaker.Fake() with { Email = fakeData.Email };
         
         //act
-        _ = await handler.Handle(command, default);
-        var sut = await handler.Handle(secondCommand, default);
+        var sut = await handler.Handle(command, default);
         
         //assert
         sut.IsError.Should().BeTrue();

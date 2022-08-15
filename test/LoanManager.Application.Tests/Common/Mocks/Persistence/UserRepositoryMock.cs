@@ -5,7 +5,21 @@ namespace LoanManager.Application.Tests.Common.Mocks.Persistence;
 
 public class UserRepositoryMock : IUserRepository
 {
-    private readonly List<User> _users = new();
+    private readonly IList<User> _users;
+
+    
+    public UserRepositoryMock(User user)
+    {
+        _users = new List<User>()
+        {
+            user
+        };
+    }
+    
+    public UserRepositoryMock()
+    {
+        _users = new List<User>();
+    }
 
     public void Add(User user)
     {
