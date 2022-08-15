@@ -1,6 +1,7 @@
 using ErrorOr;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace LoanManager.Presentation.API.Controllers;
 
@@ -9,16 +10,38 @@ public class ApiController : ControllerBase
 {
     protected IActionResult Problem(IList<Error> errors)
     {
+        if (!errors.Any())
+            return Problem();
+        
+        return errors.All(x => x.Type == ErrorType.Validation) 
+                   ? ValidationProblem(errors) 
+                   : ProblemResult(errors);
+    }
+
+    private IActionResult ProblemResult(IList<Error> errors)
+    {
         var firstError = errors[0];
 
         var statusCode = firstError.Type switch
         {
             ErrorType.Validation => StatusCodes.Status400BadRequest,
-            ErrorType.Conflict => StatusCodes.Status409Conflict,
-            ErrorType.NotFound => StatusCodes.Status404NotFound,
-            _ => throw new NotImplementedException(),
+            ErrorType.Conflict   => StatusCodes.Status409Conflict,
+            ErrorType.NotFound   => StatusCodes.Status404NotFound,
+            _                    => throw new NotImplementedException(),
         };
 
         return Problem(statusCode: statusCode, title: firstError.Description);
+    }
+
+    private IActionResult ValidationProblem(IList<Error> errors)
+    {
+        var modelStateDictionary = new ModelStateDictionary();
+        foreach (Error error in errors)
+        {
+            modelStateDictionary.AddModelError(error.Code,
+                                                  error.Description);
+        }
+
+        return ValidationProblem(modelStateDictionary);
     }
 }
