@@ -16,16 +16,16 @@ public class LoginQueryValidatorTest
         };
 
         var validator = new LoginQueryValidator();
-        
+
         //act
         var sut = validator.Validate(loginQuery);
-        
+
         //assert
         sut.Should().NotBeNull();
         sut.Errors.Should().HaveCount(1);
         sut.IsValid.Should().BeFalse();
     }
-    
+
     [Fact]
     public void Should_Fail_With_Invalid_Email()
     {
@@ -36,16 +36,16 @@ public class LoginQueryValidatorTest
         };
 
         var validator = new LoginQueryValidator();
-        
+
         //act
         var sut = validator.Validate(loginQuery);
-        
+
         //assert
         sut.Should().NotBeNull();
         sut.Errors.Should().HaveCount(1);
         sut.IsValid.Should().BeFalse();
     }
-    
+
     [Fact]
     public void Should_Be_Ok_With_Valid_Input()
     {
@@ -53,10 +53,10 @@ public class LoginQueryValidatorTest
         var loginQuery = LoginQueryFaker.Fake();
 
         var validator = new LoginQueryValidator();
-        
+
         //act
         var sut = validator.Validate(loginQuery);
-        
+
         //assert
         sut.Should().NotBeNull();
         sut.Errors.Should().BeEmpty();

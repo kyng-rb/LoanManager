@@ -7,7 +7,6 @@ public class UserRepositoryMock : IUserRepository
 {
     private readonly IList<User> _users;
 
-    
     public UserRepositoryMock(User user)
     {
         _users = new List<User>
@@ -15,7 +14,7 @@ public class UserRepositoryMock : IUserRepository
             user
         };
     }
-    
+
     public UserRepositoryMock()
     {
         _users = new List<User>();

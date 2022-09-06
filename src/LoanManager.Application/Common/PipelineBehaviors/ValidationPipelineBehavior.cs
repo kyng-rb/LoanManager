@@ -31,12 +31,9 @@ public class ValidationPipelineBehavior<TRequest, TResponse> :
 
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
-        if (validationResult.IsValid)
-        {
-            return await next();
-        }
-
-        return TryCreateErrorResponseFromErrors(validationResult.Errors, out var errorResponse)
+        return validationResult.IsValid
+            ? await next()
+            : TryCreateErrorResponseFromErrors(validationResult.Errors, out var errorResponse)
                    ? errorResponse
                    : throw new ValidationException(validationResult.Errors);
     }

@@ -39,16 +39,16 @@ public class LoginQueryHandlerTest
         //arrange
         var tokenGenerator = JWTTokenGeneratorFaker.GetMock();
         var userRepository = new UserRepositoryMock();
-        var faker          = new Faker();
+        var faker = new Faker();
 
         var loginQuery = LoginQueryFaker.Fake();
         var user = new User
         {
-            Id        = default,
+            Id = default,
             FirstName = faker.Name.FirstName(),
-            LastName  = faker.Name.LastName(),
-            Email     = loginQuery.Email,
-            Password  = faker.Internet.Password()
+            LastName = faker.Name.LastName(),
+            Email = loginQuery.Email,
+            Password = faker.Internet.Password()
         };
 
         userRepository.Add(user);
@@ -76,11 +76,11 @@ public class LoginQueryHandlerTest
         var loginQuery = LoginQueryFaker.Fake();
         var user = new User
         {
-            Id        = default,
+            Id = default,
             FirstName = faker.Name.FirstName(),
-            LastName  = faker.Name.LastName(),
-            Email     = loginQuery.Email,
-            Password  = loginQuery.Password
+            LastName = faker.Name.LastName(),
+            Email = loginQuery.Email,
+            Password = loginQuery.Password
         };
 
         userRepository.Add(user);

@@ -12,10 +12,9 @@ public class ApiController : ControllerBase
 {
     protected IActionResult Problem(IList<Error> errors)
     {
-        if (!errors.Any())
-            return Problem();
-
-        return errors.All(x => x.Type == ErrorType.Validation)
+        return !errors.Any()
+            ? Problem()
+            : errors.All(x => x.Type == ErrorType.Validation)
                    ? ValidationProblem(errors)
                    : ProblemResult(errors);
     }

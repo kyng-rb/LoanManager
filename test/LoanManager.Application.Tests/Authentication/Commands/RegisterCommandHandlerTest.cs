@@ -17,9 +17,9 @@ public class RegisterCommandHandlerTest
         //arrange
         var tokenGenerator = JWTTokenGeneratorFaker.GetMock();
         var userRepository = new UserRepositoryMock();
-        var handler = new RegisterCommandHandler(jWtTokenGenerator: tokenGenerator, 
+        var handler = new RegisterCommandHandler(jWtTokenGenerator: tokenGenerator,
                                                  userRepository: userRepository);
-        
+
         var command = RegisterCommandFaker.Fake();
 
         //act
@@ -40,27 +40,27 @@ public class RegisterCommandHandlerTest
     public async Task Should_Fail_With_Duplicated_Email()
     {
         //arrange
-        
-        var fakeData        = RegisterCommandFaker.Fake();
+
+        var fakeData = RegisterCommandFaker.Fake();
         var seedUser = new User
         {
-            Email     = fakeData.Email,
-            Id        = Guid.NewGuid(),
-            Password  = fakeData.Password,
+            Email = fakeData.Email,
+            Id = Guid.NewGuid(),
+            Password = fakeData.Password,
             FirstName = fakeData.FirstName,
-            LastName  = fakeData.LastName
+            LastName = fakeData.LastName
         };
-        
+
         var userRepository = new UserRepositoryMock(seedUser);
         var tokenGenerator = JWTTokenGeneratorFaker.GetMock();
-        var handler = new RegisterCommandHandler(jWtTokenGenerator: tokenGenerator, 
+        var handler = new RegisterCommandHandler(jWtTokenGenerator: tokenGenerator,
                                                  userRepository: userRepository);
-        
+
         var command = RegisterCommandFaker.Fake() with { Email = fakeData.Email };
-        
+
         //act
         var sut = await handler.Handle(command, default);
-        
+
         //assert
         sut.IsError.Should().BeTrue();
         sut.Errors.Should().HaveCount(1);

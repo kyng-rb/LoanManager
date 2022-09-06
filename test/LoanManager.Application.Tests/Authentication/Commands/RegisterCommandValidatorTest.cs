@@ -18,16 +18,16 @@ public class RegisterCommandValidatorTest
         };
 
         var validator = new RegisterCommandValidator();
-        
+
         //act
         var sut = validator.Validate(registerCommand);
-        
+
         //assert
         sut.Should().NotBeNull();
         sut.Errors.Should().HaveCount(3);
         sut.IsValid.Should().BeFalse();
     }
-    
+
     [Fact]
     public void Should_Fail_With_Invalid_Email()
     {
@@ -38,16 +38,16 @@ public class RegisterCommandValidatorTest
         };
 
         var validator = new RegisterCommandValidator();
-        
+
         //act
         var sut = validator.Validate(registerCommand);
-        
+
         //assert
         sut.Should().NotBeNull();
         sut.Errors.Should().HaveCount(1);
         sut.IsValid.Should().BeFalse();
     }
-    
+
     [Fact]
     public void Should_Be_Ok_With_Valid_Input()
     {
@@ -55,10 +55,10 @@ public class RegisterCommandValidatorTest
         var registerCommand = RegisterCommandFaker.Fake();
 
         var validator = new RegisterCommandValidator();
-        
+
         //act
         var sut = validator.Validate(registerCommand);
-        
+
         //assert
         sut.Should().NotBeNull();
         sut.Errors.Should().BeEmpty();

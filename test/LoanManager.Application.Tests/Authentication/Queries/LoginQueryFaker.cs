@@ -10,7 +10,7 @@ public static class LoginQueryFaker
     {
         var faker = new Faker<LoginQuery>()
             .CustomInstantiator(faker =>
-                new LoginQuery(Email: faker.Internet.Email(), 
+                new LoginQuery(Email: faker.Internet.Email(),
                                Password: faker.Internet.Password()));
 
         return faker.Generate();
