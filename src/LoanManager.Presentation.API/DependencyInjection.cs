@@ -1,4 +1,5 @@
 using LoanManager.Presentation.API.Common.Mappings;
+using LoanManager.Presentation.API.Extensions;
 
 namespace LoanManager.Presentation.API;
 
@@ -8,18 +9,14 @@ public static class DependencyInjection
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.ConfigureSwagger();
         services.AddMappings();
         return services;
     }
 
     public static WebApplication ConfigureApplication(this WebApplication app)
     {
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
+        app.ConfigureSwagger();
 
         app.UseExceptionHandler("/error");
         app.UseHttpsRedirection();

@@ -7,7 +7,7 @@ using MediatR;
 
 namespace LoanManager.Application.Common.PipelineBehaviors;
 
-public class ValidationPipelineBehavior<TRequest, TResponse> : 
+public class ValidationPipelineBehavior<TRequest, TResponse> :
     IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     //where TResponse : IErrorOr
@@ -20,8 +20,8 @@ public class ValidationPipelineBehavior<TRequest, TResponse> :
     }
 
     public async Task<TResponse> Handle(
-        TRequest                          request,
-        CancellationToken                 cancellationToken,
+        TRequest request,
+        CancellationToken cancellationToken,
         RequestHandlerDelegate<TResponse> next)
     {
         if (_validator == null)
@@ -44,7 +44,7 @@ public class ValidationPipelineBehavior<TRequest, TResponse> :
     private static bool TryCreateErrorResponseFromErrors(List<ValidationFailure> validationFailures, out TResponse errorResponse)
     {
         List<Error> errors = validationFailures
-            .ConvertAll(x => Error.Validation(code: x.PropertyName, 
+            .ConvertAll(x => Error.Validation(code: x.PropertyName,
                                                           description: x.ErrorMessage));
 
         try

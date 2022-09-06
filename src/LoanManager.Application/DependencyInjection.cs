@@ -17,12 +17,12 @@ public static class DependencyInjection
     {
         services.AddMediatR(typeof(DependencyInjection).Assembly);
         services.AddScoped(
-                           typeof(IPipelineBehavior<,>), 
+                           typeof(IPipelineBehavior<,>),
                            typeof(LoggingBehavior<,>));
         services.AddScoped(
                            typeof(IPipelineBehavior<,>),
                            typeof(ValidationPipelineBehavior<,>));
-        
+
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         return services;
     }

@@ -14,9 +14,9 @@ public class ApiController : ControllerBase
     {
         if (!errors.Any())
             return Problem();
-        
-        return errors.All(x => x.Type == ErrorType.Validation) 
-                   ? ValidationProblem(errors) 
+
+        return errors.All(x => x.Type == ErrorType.Validation)
+                   ? ValidationProblem(errors)
                    : ProblemResult(errors);
     }
 
@@ -27,9 +27,9 @@ public class ApiController : ControllerBase
         var statusCode = firstError.Type switch
         {
             ErrorType.Validation => StatusCodes.Status400BadRequest,
-            ErrorType.Conflict   => StatusCodes.Status409Conflict,
-            ErrorType.NotFound   => StatusCodes.Status404NotFound,
-            _                    => throw new NotImplementedException(),
+            ErrorType.Conflict => StatusCodes.Status409Conflict,
+            ErrorType.NotFound => StatusCodes.Status404NotFound,
+            _ => throw new NotImplementedException(),
         };
 
         return Problem(statusCode: statusCode, title: firstError.Description);
