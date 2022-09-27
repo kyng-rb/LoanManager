@@ -39,6 +39,7 @@ public static class DependencyInjection
 
         services.AddSingleton(Options.Create(settings));
         services.AddSingleton<IJWTTokenGenerator, JWTTokenGenerator>();
+
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters()
             {

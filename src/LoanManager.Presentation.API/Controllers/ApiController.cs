@@ -12,7 +12,7 @@ public class ApiController : ControllerBase
 {
     protected IActionResult Problem(IList<Error> errors)
     {
-        return !errors.Any()
+        return errors.Count == 0
             ? Problem()
             : errors.All(x => x.Type == ErrorType.Validation)
                    ? ValidationProblem(errors)

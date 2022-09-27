@@ -27,11 +27,11 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         CancellationToken cancellationToken,
         RequestHandlerDelegate<TResponse> next)
     {
-        _logger.LogInformation($"Handling {typeof(TRequest).Name} at {_dateTimeProvider.UtcNow}");
+        _logger.LogInformation("Handling {RequestName} at {Now}", typeof(TRequest).Name, _dateTimeProvider.UtcNow);
 
         var response = await next();
 
-        _logger.LogInformation($"Handled {typeof(TResponse).Name} at {_dateTimeProvider.UtcNow}");
+        _logger.LogInformation("Handling {RequestName} at {Now}", typeof(TRequest).Name, _dateTimeProvider.UtcNow);
         return response;
     }
 }
