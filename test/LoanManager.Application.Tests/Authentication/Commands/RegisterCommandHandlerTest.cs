@@ -33,19 +33,18 @@ public class RegisterCommandHandlerTest
         sut.Value.User.LastName.Should().BeEquivalentTo(command.LastName);
         sut.Value.User.Email.Should().BeEquivalentTo(command.Email);
         sut.Value.User.Password.Should().BeEquivalentTo(command.Password);
-        sut.Value.User.Id.Should().NotBeEmpty();
+        sut.Value.User.Id.Should().NotBe(0);
     }
 
     [Fact]
     public async Task Should_Fail_With_Duplicated_Email()
     {
         //arrange
-
         var fakeData = RegisterCommandFaker.Fake();
         var seedUser = new User
         {
             Email = fakeData.Email,
-            Id = Guid.NewGuid(),
+            Id = new Random().Next(),
             Password = fakeData.Password,
             FirstName = fakeData.FirstName,
             LastName = fakeData.LastName
