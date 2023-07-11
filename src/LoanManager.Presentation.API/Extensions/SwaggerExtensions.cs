@@ -42,8 +42,8 @@ public static class SwaggerExtensions
 
     public static void ConfigureSwagger(this WebApplication app)
     {
-        if (!app.Environment.IsDevelopment())
-            return;
+        //if (!app.Environment.IsDevelopment())
+        //    return;
 
         app.UseSwagger();
         app.UseSwaggerUI(options =>
