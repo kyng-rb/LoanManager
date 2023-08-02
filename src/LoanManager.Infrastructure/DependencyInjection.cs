@@ -34,11 +34,11 @@ public static class DependencyInjection
     private static IServiceCollection AddAuthorization(this IServiceCollection services,
                                                        ConfigurationManager configuration)
     {
-        var settings = new JWTSettings();
-        configuration.Bind(JWTSettings.FieldName, settings);
+        var settings = new JwtSettings();
+        configuration.Bind(JwtSettings.FieldName, settings);
 
         services.AddSingleton(Options.Create(settings));
-        services.AddSingleton<IJWTTokenGenerator, JWTTokenGenerator>();
+        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters()

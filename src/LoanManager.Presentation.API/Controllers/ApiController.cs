@@ -14,7 +14,12 @@ public class ApiController : ControllerBase
     {
         return errors.Count == 0
             ? Problem()
-            : errors.All(x => x.Type == ErrorType.Validation)
+            : GetErrors(errors);
+    }
+
+    private IActionResult GetErrors(IList<Error> errors)
+    {
+        return errors.All(x => x.Type == ErrorType.Validation)
                    ? ValidationProblem(errors)
                    : ProblemResult(errors);
     }

@@ -22,7 +22,7 @@ public class UserRepositoryMock : IUserRepository
 
     public void Add(User user)
     {
-        user.Id = _users.Count() + 1;
+        user.Id = _users.Count + 1;
         _users.Add(user);
     }
 

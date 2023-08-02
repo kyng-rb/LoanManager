@@ -33,7 +33,12 @@ public class ValidationPipelineBehavior<TRequest, TResponse> :
 
         return validationResult.IsValid
             ? await next()
-            : TryCreateErrorResponseFromErrors(validationResult.Errors, out var errorResponse)
+            : GetErrorResponse(validationResult);
+    }
+
+    private static TResponse GetErrorResponse(ValidationResult validationResult)
+    {
+        return TryCreateErrorResponseFromErrors(validationResult.Errors, out var errorResponse)
                    ? errorResponse
                    : throw new ValidationException(validationResult.Errors);
     }

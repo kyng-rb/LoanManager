@@ -11,12 +11,12 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace LoanManager.Infrastructure.Authentication;
 
-public class JWTTokenGenerator : IJWTTokenGenerator
+public class JwtTokenGenerator : IJwtTokenGenerator
 {
-    private readonly JWTSettings _settings;
+    private readonly JwtSettings _settings;
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public JWTTokenGenerator(IOptions<JWTSettings> settings, IDateTimeProvider dateTimeProvider)
+    public JwtTokenGenerator(IOptions<JwtSettings> settings, IDateTimeProvider dateTimeProvider)
     {
         _settings = settings.Value;
         _dateTimeProvider = dateTimeProvider;

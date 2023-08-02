@@ -12,10 +12,10 @@ namespace LoanManager.Application.Authentication.Commands.Register;
 
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
 {
-    private readonly IJWTTokenGenerator _jWtTokenGenerator;
+    private readonly IJwtTokenGenerator _jWtTokenGenerator;
     private readonly IUserRepository _userRepository;
 
-    public RegisterCommandHandler(IJWTTokenGenerator jWtTokenGenerator,
+    public RegisterCommandHandler(IJwtTokenGenerator jWtTokenGenerator,
                                   IUserRepository userRepository)
     {
         _jWtTokenGenerator = jWtTokenGenerator;

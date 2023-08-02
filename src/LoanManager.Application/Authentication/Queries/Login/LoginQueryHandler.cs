@@ -12,10 +12,10 @@ namespace LoanManager.Application.Authentication.Queries.Login;
 
 public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
 {
-    private readonly IJWTTokenGenerator _jWTTokenGenerator;
+    private readonly IJwtTokenGenerator _jWTTokenGenerator;
     private readonly IUserRepository _userRepository;
 
-    public LoginQueryHandler(IJWTTokenGenerator jWtTokenGenerator, IUserRepository userRepository)
+    public LoginQueryHandler(IJwtTokenGenerator jWtTokenGenerator, IUserRepository userRepository)
     {
         _jWTTokenGenerator = jWtTokenGenerator;
         _userRepository = userRepository;

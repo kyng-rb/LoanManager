@@ -1,6 +1,6 @@
 namespace LoanManager.Application.Common.Interfaces.Authentication;
 
-public class JWTSettings
+public class JwtSettings
 {
     public const string FieldName = "JWTSettings";
 
