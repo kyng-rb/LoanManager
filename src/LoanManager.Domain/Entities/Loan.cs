@@ -19,7 +19,7 @@ public class Loan : Auditable
     public int CustomerId { get; init; }
     public int OwnerId { get; init; }
 
-    public virtual ICollection<Transaction> Transactions { get; set; } = null!;
+    public virtual ICollection<Transaction> Transactions { get; set; }
     public virtual ICollection<Warranty>? Warranties { get; set; }
     public virtual Person Customer { get; set; } = null!;
     public virtual Person Owner { get; set; } = null!;
