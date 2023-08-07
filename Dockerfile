@@ -12,7 +12,7 @@ COPY ["src/LoanManager.Domain/LoanManager.Domain.csproj", "LoanManager.Domain/"]
 COPY ["src/LoanManager.Infrastructure/LoanManager.Infrastructure.csproj", "LoanManager.Infrastructure/"]
 RUN dotnet restore "LoanManager.Presentation.API/LoanManager.Presentation.API.csproj"
 COPY . .
-WORKDIR "src/LoanManager.Presentation.API"
+WORKDIR "/src/src/LoanManager.Presentation.API"
 RUN dotnet build "LoanManager.Presentation.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
