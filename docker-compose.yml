@@ -4,9 +4,10 @@ version: '3.4'
 
 services:
   api:
-    image: loanmanagerpresentationapi
+    container_name: loan_manager_api
     build:
       context: .
-      dockerfile: src/LoanManager.Presentation.API/Dockerfile
     ports:
-      - 80:5001
+      - "5001:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
