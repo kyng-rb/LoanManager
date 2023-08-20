@@ -8,7 +8,7 @@ public class Loan : Auditable
     public Loan()
     {
         Transactions = new HashSet<Transaction>();
-        Warranties = new HashSet<Warranty>();
+        Withhelds = new HashSet<Withheld>();
     }
 
     public int Id { get; init; }
@@ -19,8 +19,8 @@ public class Loan : Auditable
     public int CustomerId { get; init; }
     public int OwnerId { get; init; }
 
-    public virtual ICollection<Transaction> Transactions { get; set; }
-    public virtual ICollection<Warranty>? Warranties { get; set; }
-    public virtual Person Customer { get; set; } = null!;
-    public virtual Person Owner { get; set; } = null!;
+    public virtual ICollection<Transaction>? Transactions { get; set; }
+    public virtual ICollection<Withheld>? Withhelds { get; set; }
+    public virtual Customer Customer { get; set; } = null!;
+    public virtual Customer Owner { get; set; } = null!;
 }
