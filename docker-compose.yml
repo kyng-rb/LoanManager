@@ -15,7 +15,7 @@ services:
       - database
 
   database:
-    container_name: postgres
+    container_name: postgre
     image: postgres:latest
     restart: always
     ports:

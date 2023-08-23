@@ -3,6 +3,7 @@ using LoanManager.Infrastructure;
 using LoanManager.Presentation.API;
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services
        .AddPresentation()
        .AddInfrastructure(builder.Configuration)

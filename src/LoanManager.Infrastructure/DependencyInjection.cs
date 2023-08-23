@@ -8,11 +8,11 @@ using LoanManager.Infrastructure.Authentication;
 using LoanManager.Infrastructure.Persistence;
 using LoanManager.Infrastructure.Services;
 
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -28,6 +28,15 @@ public static class DependencyInjection
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IUserRepository, UserRepository>();
 
+        services.AddDbContext<DatabaseContext>(
+            options =>
+                options.UseNpgsql(configuration.GetConnectionString("Postgre"))
+                .LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors()
+        );
+
+        services.BuildServiceProvider().GetService<DatabaseContext>().Database.Migrate();
         return services;
     }
 
