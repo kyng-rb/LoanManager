@@ -10,7 +10,7 @@ namespace LoanManager.Application.Common.PipelineBehaviors;
 public class ValidationPipelineBehavior<TRequest, TResponse> :
     IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
-    //where TResponse : IErrorOr
+//where TResponse : IErrorOr
 {
     private readonly IValidator<TRequest>? _validator;
 
@@ -29,25 +29,26 @@ public class ValidationPipelineBehavior<TRequest, TResponse> :
             return await next();
         }
 
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        ValidationResult? validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
         return validationResult.IsValid
-            ? await next()
-            : GetErrorResponse(validationResult);
+                   ? await next()
+                   : GetErrorResponse(validationResult);
     }
 
     private static TResponse GetErrorResponse(ValidationResult validationResult)
     {
-        return TryCreateErrorResponseFromErrors(validationResult.Errors, out var errorResponse)
+        return TryCreateErrorResponseFromErrors(validationResult.Errors, out TResponse errorResponse)
                    ? errorResponse
                    : throw new ValidationException(validationResult.Errors);
     }
 
-    private static bool TryCreateErrorResponseFromErrors(List<ValidationFailure> validationFailures, out TResponse errorResponse)
+    private static bool TryCreateErrorResponseFromErrors(List<ValidationFailure> validationFailures,
+                                                         out TResponse errorResponse)
     {
         List<Error> errors = validationFailures
-            .ConvertAll(x => Error.Validation(code: x.PropertyName,
-                                                          description: x.ErrorMessage));
+            .ConvertAll(x => Error.Validation(x.PropertyName,
+                                              x.ErrorMessage));
 
         try
         {

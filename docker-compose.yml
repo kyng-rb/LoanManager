@@ -8,14 +8,14 @@ services:
     build:
       context: .
     ports:
-      - "5001:80"
+      - "5000:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     depends_on:
       - database
 
   database:
-    container_name: postgre
+    container_name: postgres
     image: postgres:latest
     restart: always
     ports:
