@@ -1,8 +1,8 @@
+using LoanManager.Application.Common.Interfaces.Authentication;
 using LoanManager.Application.Common.Interfaces.Persistence;
 using LoanManager.Application.Common.Interfaces.Services;
 using LoanManager.Infrastructure.Persistence;
 using LoanManager.Infrastructure.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +18,8 @@ public static class DependencyInjection
         services.AddDatabase(configuration);
 
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddSingleton<IUserRepository, UserRepository>();
+        services.AddSingleton<IJwtTokenGenerator, JWTTokenGenerator>();
 
         return services;
     }
@@ -37,17 +38,5 @@ public static class DependencyInjection
                                                        .EnableDetailedErrors()
                                               );
         return services;
-    }
-
-    private static IServiceCollection ConfigureAuthentication(this IServiceCollection services)
-    {
-        services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
-        
-        
-        return services;
-    }
-
-    public class MyUser : IdentityUser
-    {
     }
 }

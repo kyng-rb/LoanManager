@@ -12,12 +12,12 @@ namespace LoanManager.Application.Authentication.Queries.Login;
 
 public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<AuthenticationResult>>
 {
-    private readonly IJwtTokenGenerator _jWTTokenGenerator;
+    private readonly IJwtTokenGenerator _jWtTokenGenerator;
     private readonly IUserRepository _userRepository;
 
     public LoginQueryHandler(IJwtTokenGenerator jWtTokenGenerator, IUserRepository userRepository)
     {
-        _jWTTokenGenerator = jWtTokenGenerator;
+        _jWtTokenGenerator = jWtTokenGenerator;
         _userRepository = userRepository;
     }
 
@@ -31,7 +31,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
         if (user.Password != query.Password)
             return Errors.Authentication.InvalidCredentials;
 
-        var token = _jWTTokenGenerator.Generate(user);
+        var token = _jWtTokenGenerator.Generate(user);
 
         return new AuthenticationResult(
             User: user,

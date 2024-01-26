@@ -11,12 +11,12 @@ public static class DependencyInjection
     public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
     {
         services.AddMediatR(typeof(DependencyInjection).Assembly);
-        services.AddScoped(
+        services.AddSingleton(
                            typeof(IPipelineBehavior<,>),
                            typeof(LoggingBehavior<,>));
-        services.AddScoped(
-                           typeof(IPipelineBehavior<,>),
-                           typeof(ValidationPipelineBehavior<,>));
+        services.AddSingleton(
+                              typeof(IPipelineBehavior<,>),
+                              typeof(ValidationPipelineBehavior<,>));
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         return services;

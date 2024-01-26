@@ -2,7 +2,7 @@ using LoanManager.Domain.Entities.Bases;
 
 namespace LoanManager.Domain.Entities
 {
-    public class Withheld : Auditable
+    public class Withhold : Auditable
     {
         public int Id { get; set; }
         public int LoanId { get; set; }

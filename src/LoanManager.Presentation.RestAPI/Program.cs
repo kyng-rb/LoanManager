@@ -10,15 +10,7 @@ builder.Services
        .ConfigureInfrastructureServices(builder.Configuration)
        .ConfigureApplicationServices();
 
-builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
-
 var app = builder.Build();
 app.ConfigureWebApplication();
-
-app.MapGet("/Home", () =>
-{
-    throw new Exception("The most generic possible exception");
-    return "Hello World!";
-});
 
 app.Run();

@@ -23,6 +23,6 @@ public class DatabaseContext : DbContext
 
     public virtual DbSet<Loan> Loans => Set<Loan>();
     public virtual DbSet<Transaction> Transactions => Set<Transaction>();
-    public virtual DbSet<Withheld> Withhelds => Set<Withheld>();
+    public virtual DbSet<Withhold> Withholds => Set<Withhold>();
 
 }
