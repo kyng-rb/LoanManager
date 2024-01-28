@@ -10,19 +10,19 @@ using MediatR;
 
 namespace LoanManager.Application.Authentication.Commands.Register;
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<AuthenticationResult>>
+public class CommandHandler : IRequestHandler<Command, ErrorOr<AuthenticationResult>>
 {
     private readonly IJwtTokenGenerator _jWtTokenGenerator;
     private readonly IUserRepository _userRepository;
 
-    public RegisterCommandHandler(IJwtTokenGenerator jWtTokenGenerator,
+    public CommandHandler(IJwtTokenGenerator jWtTokenGenerator,
                                   IUserRepository userRepository)
     {
         _jWtTokenGenerator = jWtTokenGenerator;
         _userRepository = userRepository;
     }
 
-    public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
+    public async Task<ErrorOr<AuthenticationResult>> Handle(Command command, CancellationToken cancellationToken)
     {
         await Task.CompletedTask;
 

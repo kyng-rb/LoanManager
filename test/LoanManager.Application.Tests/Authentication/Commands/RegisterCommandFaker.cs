@@ -6,10 +6,10 @@ namespace LoanManager.Application.Tests.Authentication.Commands;
 
 public static class RegisterCommandFaker
 {
-    public static RegisterCommand Fake()
+    public static Command Fake()
     {
-        var faker = new Faker<RegisterCommand>()
-        .CustomInstantiator(faker => new RegisterCommand(
+        var faker = new Faker<Command>()
+        .CustomInstantiator(faker => new Command(
             FirstName: faker.Name.FirstName(),
             LastName: faker.Person.LastName,
             Email: faker.Internet.Email(),

@@ -17,7 +17,7 @@ public class RegisterCommandValidatorTest
             LastName = String.Empty
         };
 
-        var validator = new RegisterCommandValidator();
+        var validator = new CommandValidator();
 
         //act
         var sut = validator.Validate(registerCommand);
@@ -37,7 +37,7 @@ public class RegisterCommandValidatorTest
             Email = "A sexy string"
         };
 
-        var validator = new RegisterCommandValidator();
+        var validator = new CommandValidator();
 
         //act
         var sut = validator.Validate(registerCommand);
@@ -54,7 +54,7 @@ public class RegisterCommandValidatorTest
         //arrange
         var registerCommand = RegisterCommandFaker.Fake();
 
-        var validator = new RegisterCommandValidator();
+        var validator = new CommandValidator();
 
         //act
         var sut = validator.Validate(registerCommand);

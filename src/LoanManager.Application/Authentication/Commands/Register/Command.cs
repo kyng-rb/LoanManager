@@ -6,7 +6,7 @@ using MediatR;
 
 namespace LoanManager.Application.Authentication.Commands.Register;
 
-public record RegisterCommand(
+public record Command(
 string FirstName,
 string LastName,
 string Email,

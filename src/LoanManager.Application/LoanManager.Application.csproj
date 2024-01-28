@@ -20,8 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Transactions\Commands" />
-    <Folder Include="Transactions\Common" />
-    <Folder Include="Transactions\Queries" />
+    <Folder Include="Customer\Queries\" />
   </ItemGroup>
 </Project>

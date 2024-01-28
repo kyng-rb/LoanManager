@@ -8,7 +8,7 @@ public class Loan : Auditable
     public Loan()
     {
         Transactions = new HashSet<Transaction>();
-        Withhelds = new HashSet<Withhold>();
+        Withholds = new HashSet<Withhold>();
     }
 
     public int Id { get; init; }
@@ -20,7 +20,7 @@ public class Loan : Auditable
     public int OwnerId { get; init; }
 
     public virtual ICollection<Transaction>? Transactions { get; set; }
-    public virtual ICollection<Withhold>? Withhelds { get; set; }
+    public virtual ICollection<Withhold>? Withholds { get; set; }
     public virtual Customer Customer { get; set; } = null!;
     public virtual Customer Owner { get; set; } = null!;
 }

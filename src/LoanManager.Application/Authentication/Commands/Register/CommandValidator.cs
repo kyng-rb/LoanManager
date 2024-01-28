@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace LoanManager.Application.Authentication.Commands.Register;
 
-public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
+public class CommandValidator : AbstractValidator<Command>
 {
-    public RegisterCommandValidator()
+    public CommandValidator()
     {
         RuleFor(x => x.FirstName).NotEmpty();
         RuleFor(x => x.LastName).NotEmpty();

@@ -17,7 +17,7 @@ public class RegisterCommandHandlerTest
         //arrange
         var tokenGenerator = JwtTokenGeneratorFaker.GetMock();
         var userRepository = new UserRepositoryMock();
-        var handler = new RegisterCommandHandler(jWtTokenGenerator: tokenGenerator,
+        var handler = new CommandHandler(jWtTokenGenerator: tokenGenerator,
                                                  userRepository: userRepository);
 
         var command = RegisterCommandFaker.Fake();
@@ -52,7 +52,7 @@ public class RegisterCommandHandlerTest
 
         var userRepository = new UserRepositoryMock(seedUser);
         var tokenGenerator = JwtTokenGeneratorFaker.GetMock();
-        var handler = new RegisterCommandHandler(jWtTokenGenerator: tokenGenerator,
+        var handler = new CommandHandler(jWtTokenGenerator: tokenGenerator,
                                                  userRepository: userRepository);
 
         var command = RegisterCommandFaker.Fake() with { Email = fakeData.Email };
