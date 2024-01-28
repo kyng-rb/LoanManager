@@ -1,24 +1,20 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["src/LoanManager.Presentation.API/LoanManager.Presentation.API.csproj", "LoanManager.Presentation.API/"]
-COPY ["src/LoanManager.Presentation.Contracts/LoanManager.Presentation.Contracts.csproj", "LoanManager.Presentation.Contracts/"]
-COPY ["src/LoanManager.Application/LoanManager.Application.csproj", "LoanManager.Application/"]
-COPY ["src/LoanManager.Domain/LoanManager.Domain.csproj", "LoanManager.Domain/"]
-COPY ["src/LoanManager.Infrastructure/LoanManager.Infrastructure.csproj", "LoanManager.Infrastructure/"]
-RUN dotnet restore "LoanManager.Presentation.API/LoanManager.Presentation.API.csproj"
+COPY ["src/LoanManager.Presentation.RestAPI/LoanManager.Presentation.RestAPI.csproj", "src/LoanManager.Presentation.RestAPI/"]
+RUN dotnet restore "src/LoanManager.Presentation.RestAPI/LoanManager.Presentation.RestAPI.csproj"
 COPY . .
-WORKDIR "/src/src/LoanManager.Presentation.API"
-RUN dotnet build "LoanManager.Presentation.API.csproj" -c Release -o /app/build
+WORKDIR "/src/src/LoanManager.Presentation.RestAPI"
+RUN dotnet build "LoanManager.Presentation.RestAPI.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "LoanManager.Presentation.API.csproj" -c Release -o /app/publish
+RUN dotnet publish "LoanManager.Presentation.RestAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "LoanManager.Presentation.API.dll"]
+ENTRYPOINT ["dotnet", "LoanManager.Presentation.RestAPI.dll"]

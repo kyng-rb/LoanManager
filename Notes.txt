@@ -2,3 +2,18 @@
 2 - To learn about how to test controllers
 3 - To learn to configure ILogger
 4 - Unit Tests, Integration Tests and Functional Tests
+
+
+
+
+
+
+/*
+cd ..Persistence project
+dotnet ef migrations add Args.MigrationName -o .\Persistence\Migrations
+*/
+
+
+/*
+docker compose down; docker compose build; docker compose up
+*/

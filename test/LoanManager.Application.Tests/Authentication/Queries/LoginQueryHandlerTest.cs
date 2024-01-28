@@ -17,7 +17,7 @@ public class LoginQueryHandlerTest
     public async Task Should_Fail_With_No_Existing_User()
     {
         //arrange
-        var tokenGenerator = JWTTokenGeneratorFaker.GetMock();
+        var tokenGenerator = JwtTokenGeneratorFaker.GetMock();
         var userRepository = new UserRepositoryMock();
         var handler = new LoginQueryHandler(jWtTokenGenerator: tokenGenerator,
                                             userRepository: userRepository);
@@ -37,7 +37,7 @@ public class LoginQueryHandlerTest
     public async Task Should_Fail_With_Wrong_Password()
     {
         //arrange
-        var tokenGenerator = JWTTokenGeneratorFaker.GetMock();
+        var tokenGenerator = JwtTokenGeneratorFaker.GetMock();
         var userRepository = new UserRepositoryMock();
         var faker = new Faker();
 
@@ -68,7 +68,7 @@ public class LoginQueryHandlerTest
     public async Task Should_Login_With_Valid_Credentials()
     {
         //arrange
-        var tokenGenerator = JWTTokenGeneratorFaker.GetMock();
+        var tokenGenerator = JwtTokenGeneratorFaker.GetMock();
         var userRepository = new UserRepositoryMock();
 
         var faker = new Faker();
