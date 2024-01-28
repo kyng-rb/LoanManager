@@ -11,10 +11,6 @@ public class DatabaseContext : DbContext
     {
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-    }
-
     public virtual DbSet<Server> Servers => Set<Server>();
     public virtual DbSet<ServerUser> ServerUser => Set<ServerUser>();
     public virtual DbSet<ServerCustomer> ServerCustomers => Set<ServerCustomer>();

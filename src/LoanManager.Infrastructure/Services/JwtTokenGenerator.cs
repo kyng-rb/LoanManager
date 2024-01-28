@@ -3,7 +3,7 @@ using LoanManager.Domain.Entities;
 
 namespace LoanManager.Infrastructure.Services;
 
-public class JWTTokenGenerator : IJwtTokenGenerator
+public class JwtTokenGenerator : IJwtTokenGenerator
 {
     public string Generate(User user)
     {

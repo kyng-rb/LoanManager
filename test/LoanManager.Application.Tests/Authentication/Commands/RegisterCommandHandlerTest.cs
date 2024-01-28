@@ -15,7 +15,7 @@ public class RegisterCommandHandlerTest
     public async Task Should_Register_With_Valid_Input()
     {
         //arrange
-        var tokenGenerator = JWTTokenGeneratorFaker.GetMock();
+        var tokenGenerator = JwtTokenGeneratorFaker.GetMock();
         var userRepository = new UserRepositoryMock();
         var handler = new RegisterCommandHandler(jWtTokenGenerator: tokenGenerator,
                                                  userRepository: userRepository);
@@ -51,7 +51,7 @@ public class RegisterCommandHandlerTest
         };
 
         var userRepository = new UserRepositoryMock(seedUser);
-        var tokenGenerator = JWTTokenGeneratorFaker.GetMock();
+        var tokenGenerator = JwtTokenGeneratorFaker.GetMock();
         var handler = new RegisterCommandHandler(jWtTokenGenerator: tokenGenerator,
                                                  userRepository: userRepository);
 

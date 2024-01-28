@@ -5,7 +5,7 @@ using Moq;
 
 namespace LoanManager.Application.Tests.Authentication.Common;
 
-public static class JWTTokenGeneratorFaker
+public static class JwtTokenGeneratorFaker
 {
     public static IJwtTokenGenerator GetMock()
     {
