@@ -19,7 +19,7 @@ public class CommandHandler : IRequestHandler<Command, ErrorOr<CommandResult>>
     {
         await Task.CompletedTask;
         
-        if (_repository.GetByPhone(request.Phone) is { IsError: true })
+        if (_repository.GetByPhone(request.Phone) is { IsError: false })
             return Errors.Customer.DuplicatedPhone;
         
         var customer = new Domain.Entities.Customer()

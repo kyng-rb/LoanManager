@@ -1,7 +1,7 @@
 using LoanManager.Application.Common.Interfaces.Persistence;
 using LoanManager.Domain.Entities;
 
-namespace LoanManager.Application.Tests.Common.Mocks.Persistence;
+namespace LoanManager.Application.Test.Common.Mocks.Persistence;
 
 public class UserRepositoryMock : IUserRepository
 {

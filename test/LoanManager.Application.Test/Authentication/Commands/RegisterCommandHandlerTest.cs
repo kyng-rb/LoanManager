@@ -3,11 +3,11 @@ using ErrorOr;
 using FluentAssertions;
 
 using LoanManager.Application.Authentication.Commands.Register;
-using LoanManager.Application.Tests.Authentication.Common;
-using LoanManager.Application.Tests.Common.Mocks.Persistence;
+using LoanManager.Application.Test.Authentication.Common;
+using LoanManager.Application.Test.Common.Mocks.Persistence;
 using LoanManager.Domain.Entities;
 
-namespace LoanManager.Application.Tests.Authentication.Commands;
+namespace LoanManager.Application.Test.Authentication.Commands;
 
 public class RegisterCommandHandlerTest
 {

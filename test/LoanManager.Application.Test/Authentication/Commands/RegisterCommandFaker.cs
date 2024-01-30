@@ -2,7 +2,7 @@ using Bogus;
 
 using LoanManager.Application.Authentication.Commands.Register;
 
-namespace LoanManager.Application.Tests.Authentication.Commands;
+namespace LoanManager.Application.Test.Authentication.Commands;
 
 public static class RegisterCommandFaker
 {

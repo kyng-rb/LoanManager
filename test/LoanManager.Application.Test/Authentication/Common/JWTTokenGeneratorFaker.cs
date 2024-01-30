@@ -3,7 +3,7 @@ using LoanManager.Domain.Entities;
 
 using Moq;
 
-namespace LoanManager.Application.Tests.Authentication.Common;
+namespace LoanManager.Application.Test.Authentication.Common;
 
 public static class JwtTokenGeneratorFaker
 {

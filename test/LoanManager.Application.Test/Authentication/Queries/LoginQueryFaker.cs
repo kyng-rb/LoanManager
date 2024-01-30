@@ -2,7 +2,7 @@ using Bogus;
 
 using LoanManager.Application.Authentication.Queries.Login;
 
-namespace LoanManager.Application.Tests.Authentication.Queries;
+namespace LoanManager.Application.Test.Authentication.Queries;
 
 public static class LoginQueryFaker
 {
