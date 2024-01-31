@@ -19,7 +19,7 @@ public class CommandHandlerTest
         _handler = new CommandHandler(_customerRepositoryMock.Object);
     }
 
-    private void RepositoryWithAlreadyUsedPhone()
+    private void GivenAlreadyUsedPhoneRepository()
     {
         var existingCustomer = new Domain.Entities.Customer()
         {
@@ -31,11 +31,22 @@ public class CommandHandlerTest
         _customerRepositoryMock.Setup(x => x.GetByPhone(It.IsAny<string>())).Returns(existingCustomer);
     }
 
+    private void GivenEmptyRepository()
+    {
+        var customerNotFoundResponse = Errors.Customer.NotFound;
+        _customerRepositoryMock
+            .Setup(x => x.GetByPhone(It.IsAny<string>()))
+            .Returns(customerNotFoundResponse);
+
+        _customerRepositoryMock
+            .Setup(x => x.Add(It.IsAny<Domain.Entities.Customer>()));
+    }
+
     [Fact]
     public async Task Should_Fail_With_Duplicated_Phone()
     {
         // arrange
-        RepositoryWithAlreadyUsedPhone();
+        GivenAlreadyUsedPhoneRepository();
         var command = CommandFaker.Command();
         
         // act
@@ -46,5 +57,23 @@ public class CommandHandlerTest
         sut.FirstError.Code.Should().Be(Errors.Customer.DuplicatedPhone.Code);
         sut.FirstError.Description.Should().Be(Errors.Customer.DuplicatedPhone.Description);
         _customerRepositoryMock.Verify(x => x.GetByPhone(It.IsAny<string>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task Should_Succeed_With_Valid_Input()
+    {
+        // arrange
+        GivenEmptyRepository();
+        var command = CommandFaker.Command();
+
+        // act
+        var sut = await _handler.Handle(command, default);
+
+        // assert
+        sut.IsError.Should().BeFalse();
+        sut.Value.Customer.Should().NotBeNull()
+            .And.BeEquivalentTo(command);
+        _customerRepositoryMock.Verify(x => x.GetByPhone(It.IsAny<string>()), Times.Once);
+        _customerRepositoryMock.Verify(x => x.Add(It.IsAny<Domain.Entities.Customer>()), Times.Once);
     }
 }
