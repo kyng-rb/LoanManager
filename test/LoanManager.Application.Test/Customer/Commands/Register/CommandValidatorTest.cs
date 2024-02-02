@@ -9,6 +9,11 @@ public class CommandValidatorTest
     private readonly CommandValidator _validator = new();
     private readonly Faker _faker = new();
 
+    private const string RequiredPhoneNumberMessage = "Phone Number is required.";
+    private const string InvalidPhoneNumberLengthMessage = "PhoneNumber must have 8 characters.";
+    private const string RequiredFirstNameMessage = "FirstName is required.";
+    private const string InvalidPhoneNumberFormatMessage = "PhoneNumber must have the following format ########";
+
     [Fact]
     public async Task Should_Fail_With_Empty_Name()
     {
@@ -25,7 +30,7 @@ public class CommandValidatorTest
         sut.Should().NotBeNull();
         sut.IsValid.Should().BeFalse();
         sut.Errors.Count.Should().Be(1);
-        sut.Errors.First().ErrorMessage.Should().Be("FirstName is required.");
+        sut.Errors.First().ErrorMessage.Should().Be(RequiredFirstNameMessage);
     }
     
     [Fact]
@@ -36,23 +41,12 @@ public class CommandValidatorTest
         {
             Phone = string.Empty
         };
-
-        // act
-        var sut = await _validator.ValidateAsync(command);
-
-        // assert
-        sut.Should().NotBeNull();
-        sut.IsValid.Should().BeFalse();
-        sut.Errors.First().ErrorMessage.Should().Be("Phone Number is required.");
-    }
-    
-    [Fact]
-    public async Task Should_Fail_With_Invalid_PhoneNumber()
-    {
-        // arrange
-        var command = CommandFaker.Command() with
+        
+        var expectedErrorMessages = new string[]
         {
-            Phone = _faker.Phone.PhoneNumber("####YYYY")
+            RequiredPhoneNumberMessage,
+            InvalidPhoneNumberFormatMessage,
+            InvalidPhoneNumberLengthMessage
         };
 
         // act
@@ -62,12 +56,34 @@ public class CommandValidatorTest
         sut.Should().NotBeNull();
         sut.IsValid.Should().BeFalse();
         sut.Errors.Count.Should().Be(3);
-        
-        sut.Errors.First().ErrorMessage.Should().Be("PhoneNumber must have the following format ########");
+        sut.Errors.ForEach(x =>
+        {
+            expectedErrorMessages.Should().Contain(x.ErrorMessage);
+        });
     }
     
     [Fact]
-    public async Task Should_Fail_With_Invalid_Characters_Length_PhoneNumber()
+    public async Task Should_Fail_With_Invalid_Format_PhoneNumber()
+    {
+        // arrange
+        var command = CommandFaker.Command() with
+        {
+            Phone = _faker.Phone.PhoneNumber("#######Y")
+        };
+        
+        // act
+        var sut = await _validator.ValidateAsync(command);
+
+        // assert
+        sut.Should().NotBeNull();
+        sut.IsValid.Should().BeFalse();
+        sut.Errors.Count.Should().Be(1);
+        sut.Errors.First(x =>
+            x.ErrorMessage.Equals(InvalidPhoneNumberFormatMessage, StringComparison.InvariantCultureIgnoreCase));
+    }
+    
+    [Fact]
+    public async Task Should_Fail_With_Invalid_Character_Length_PhoneNumber()
     {
         // arrange
         var command = CommandFaker.Command() with
@@ -75,6 +91,12 @@ public class CommandValidatorTest
             Phone = _faker.Phone.PhoneNumber("####")
         };
 
+        var expectedErrorMessages = new string[]
+        {
+            InvalidPhoneNumberFormatMessage,
+            InvalidPhoneNumberLengthMessage
+        };
+        
         // act
         var sut = await _validator.ValidateAsync(command);
 
@@ -82,7 +104,10 @@ public class CommandValidatorTest
         sut.Should().NotBeNull();
         sut.IsValid.Should().BeFalse();
         sut.Errors.Count.Should().Be(2);
-        sut.Errors.First().ErrorMessage.Should().Be("PhoneNumber must have 8 characters.");
+        sut.Errors.ForEach(x =>
+        {
+            expectedErrorMessages.Should().Contain(x.ErrorMessage);
+        });
     }
     
     [Fact]
