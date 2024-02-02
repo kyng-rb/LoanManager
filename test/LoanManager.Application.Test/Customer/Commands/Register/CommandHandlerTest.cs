@@ -19,24 +19,13 @@ public class CommandHandlerTest
         _handler = new CommandHandler(_customerRepositoryMock.Object);
     }
 
-    private void GivenAlreadyUsedPhoneRepository()
-    {
-        var existingCustomer = new Domain.Entities.Customer()
-        {
-            Phone = _faker.Phone.PhoneNumber(),
-            FirstName = _faker.Name.FirstName(),
-            LastName = _faker.Name.LastName()
-        };
-        
-        _customerRepositoryMock.Setup(x => x.GetByPhone(It.IsAny<string>())).Returns(existingCustomer);
-    }
+    private void GivenAlreadyUsedPhoneRepository()=> _customerRepositoryMock.Setup(x => x.ExistsByPhone(It.IsAny<string>())).Returns(true);
 
     private void GivenEmptyRepository()
     {
         var customerNotFoundResponse = Errors.Customer.NotFound;
         _customerRepositoryMock
-            .Setup(x => x.GetByPhone(It.IsAny<string>()))
-            .Returns(customerNotFoundResponse);
+            .Setup(x => x.ExistsByPhone(It.IsAny<string>())).Returns(false);
 
         _customerRepositoryMock
             .Setup(x => x.Add(It.IsAny<Domain.Entities.Customer>()));
@@ -56,7 +45,7 @@ public class CommandHandlerTest
         sut.IsError.Should().BeTrue();
         sut.FirstError.Code.Should().Be(Errors.Customer.DuplicatedPhone.Code);
         sut.FirstError.Description.Should().Be(Errors.Customer.DuplicatedPhone.Description);
-        _customerRepositoryMock.Verify(x => x.GetByPhone(It.IsAny<string>()), Times.Once);
+        _customerRepositoryMock.Verify(x => x.ExistsByPhone(It.IsAny<string>()), Times.Once);
     }
 
     [Fact]
@@ -73,7 +62,7 @@ public class CommandHandlerTest
         sut.IsError.Should().BeFalse();
         sut.Value.Customer.Should().NotBeNull()
             .And.BeEquivalentTo(command);
-        _customerRepositoryMock.Verify(x => x.GetByPhone(It.IsAny<string>()), Times.Once);
+        _customerRepositoryMock.Verify(x => x.ExistsByPhone(It.IsAny<string>()), Times.Once);
         _customerRepositoryMock.Verify(x => x.Add(It.IsAny<Domain.Entities.Customer>()), Times.Once);
     }
 }

@@ -4,7 +4,7 @@ using LoanManager.Application.Customer.Common;
 using LoanManager.Domain.Common.Errors;
 using MediatR;
 
-namespace LoanManager.Application.Customer.Commands.Register;
+namespace LoanManager.Application.Customer.Commands.Update;
 
 public class CommandHandler : IRequestHandler<Command, ErrorOr<CommandResult>>
 {
@@ -19,18 +19,25 @@ public class CommandHandler : IRequestHandler<Command, ErrorOr<CommandResult>>
     {
         await Task.CompletedTask;
         
-        if (_repository.ExistsByPhone(request.Phone))
-            return Errors.Customer.DuplicatedPhone;
+        var retrieveCustomerOperation = _repository.GetById(request.CustomerId);
+
+        if (retrieveCustomerOperation.IsError)
+            return Errors.Customer.NotFound;
         
+        if (_repository.ExistsByPhone(request.PhoneNumber))
+            return Errors.Customer.DuplicatedPhone;
+
         var customer = new Domain.Entities.Customer()
         {
-            Phone = request.Phone,
+            Id = request.CustomerId,
+            Phone    = request.PhoneNumber,
             FirstName = request.FirstName,
             LastName = request.LastName
         };
         
-        _repository.Add(customer);
+        _repository.Update(customer);
 
-        return new CommandResult(customer);
+        var result = new CommandResult(customer);
+        return result;
     }
 }

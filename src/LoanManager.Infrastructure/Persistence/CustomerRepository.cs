@@ -5,21 +5,33 @@ using LoanManager.Domain.Entities;
 
 namespace LoanManager.Infrastructure.Persistence;
 
-public class CustomerRepository :ICustomerRepository
+public class CustomerRepository : ICustomerRepository
 {
     private readonly static List<Customer> Customers = new();
-    
+    private readonly DatabaseContext _context;
+
+    public CustomerRepository(DatabaseContext context)
+    {
+        _context = context;
+    }
+
     public void Add(Customer customer)
     {
         Customers.Add(customer);
     }
 
-    public ErrorOr<Customer> GetByPhone(string phone)
+    public void Update(Customer customer)
     {
-        var customer = Customers.SingleOrDefault(customer =>
-                                                     customer.Phone.Equals(phone,
-                                                                           StringComparison
-                                                                               .InvariantCultureIgnoreCase));
+        _context.Customers.Attach(customer);
+    }
+
+    public bool ExistsByPhone(string phone) 
+        => Customers.Exists(customer => customer.Phone.Equals(phone, StringComparison.InvariantCultureIgnoreCase));
+
+    public ErrorOr<Customer> GetById(int customerId)
+    {
+        var customer = Customers.SingleOrDefault(customer => customer.Id == customerId);
+        
         if (customer is null)
             return Errors.Customer.NotFound;
 
