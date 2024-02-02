@@ -1,6 +1,7 @@
 using Bogus;
 using FluentAssertions;
 using LoanManager.Application.Customer.Commands.Register;
+using LoanManager.Application.Test.Customer.Commands.Common;
 
 namespace LoanManager.Application.Test.Customer.Commands.Register;
 
@@ -18,7 +19,7 @@ public class CommandValidatorTest
     public async Task Should_Fail_With_Empty_Name()
     {
         // arrange
-        var command = CommandFaker.Command() with
+        var command = CommandFaker.RegisterCommand() with
         {
             FirstName = string.Empty
         };
@@ -37,7 +38,7 @@ public class CommandValidatorTest
     public async Task Should_Fail_With_Empty_Phone()
     {
         // arrange
-        var command = CommandFaker.Command() with
+        var command = CommandFaker.RegisterCommand() with
         {
             Phone = string.Empty
         };
@@ -66,7 +67,7 @@ public class CommandValidatorTest
     public async Task Should_Fail_With_Invalid_Format_PhoneNumber()
     {
         // arrange
-        var command = CommandFaker.Command() with
+        var command = CommandFaker.RegisterCommand() with
         {
             Phone = _faker.Phone.PhoneNumber("#######Y")
         };
@@ -86,7 +87,7 @@ public class CommandValidatorTest
     public async Task Should_Fail_With_Invalid_Character_Length_PhoneNumber()
     {
         // arrange
-        var command = CommandFaker.Command() with
+        var command = CommandFaker.RegisterCommand() with
         {
             Phone = _faker.Phone.PhoneNumber("####")
         };
@@ -114,7 +115,7 @@ public class CommandValidatorTest
     public async Task Should_Succeed_With_Valid_Input()
     {
         // arrange
-        var command = CommandFaker.Command();
+        var command = CommandFaker.RegisterCommand();
 
         // act
         var sut = await _validator.ValidateAsync(command);
