@@ -23,7 +23,7 @@ public static class CommandFaker
                 CustomerId: faker.Random.Int(),
                 FirstName: faker.Name.FirstName(),
                 LastName: faker.Person.LastName,
-                PhoneNumber : faker.Phone.PhoneNumber("########")
+                Phone : faker.Phone.PhoneNumber("########")
                 ));
 
         return faker.Generate();

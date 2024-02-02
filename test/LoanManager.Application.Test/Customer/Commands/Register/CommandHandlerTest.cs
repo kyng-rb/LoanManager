@@ -1,6 +1,4 @@
-using Bogus;
 using FluentAssertions;
-using LoanManager.Application.Common.Interfaces.Persistence;
 using LoanManager.Application.Customer.Commands.Register;
 using LoanManager.Application.Test.Customer.Commands.Common;
 using LoanManager.Domain.Common.Errors;
@@ -16,12 +14,18 @@ public class CommandHandlerTest : BaseHandler
     {  
         _handler = new CommandHandler(_customerRepositoryMock.Object);
     }
-
+    
+    private void GivenCustomerAddRepository() 
+        => _customerRepositoryMock.Setup(x => x.Add(It.IsAny<Domain.Entities.Customer>()));
+    
+    private void ThenAddWasCalled() 
+        => _customerRepositoryMock.Verify(x => x.Add(It.IsAny<Domain.Entities.Customer>()), Times.Once);
+    
     [Fact]
     public async Task Should_Fail_With_Duplicated_Phone()
     {
         // arrange
-        GivenCustomerAlreadyUsedPhoneRepository();
+        GivenCustomerExistsPhoneNumberRepository();
         var command = CommandFaker.RegisterCommand();
         
         // act
@@ -37,7 +41,8 @@ public class CommandHandlerTest : BaseHandler
     public async Task Should_Succeed_With_Valid_Input()
     {
         // arrange
-        GivenCustomerEmptyRepository();
+        GivenCustomerNotExistsByPhoneNumberRepository();
+        GivenCustomerAddRepository();
         var command = CommandFaker.RegisterCommand();
 
         // act
@@ -49,10 +54,5 @@ public class CommandHandlerTest : BaseHandler
             .And.BeEquivalentTo(command);
         ThenExistsByPhoneWasCalled();
         ThenAddWasCalled();
-    }
-
-    private void ThenAddWasCalled()
-    {
-        _customerRepositoryMock.Verify(x => x.Add(It.IsAny<Domain.Entities.Customer>()), Times.Once);
     }
 }

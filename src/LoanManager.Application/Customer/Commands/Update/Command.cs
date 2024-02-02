@@ -4,5 +4,5 @@ using ErrorOr;
 
 namespace LoanManager.Application.Customer.Commands.Update;
 
-public record Command(int CustomerId, string FirstName, string? LastName, string PhoneNumber) 
+public record Command(int CustomerId, string FirstName, string? LastName, string Phone) 
     : IRequest<ErrorOr<CommandResult>>;

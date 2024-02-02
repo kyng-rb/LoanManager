@@ -19,18 +19,16 @@ public class CommandHandler : IRequestHandler<Command, ErrorOr<CommandResult>>
     {
         await Task.CompletedTask;
         
-        var retrieveCustomerOperation = _repository.GetById(request.CustomerId);
-
-        if (retrieveCustomerOperation.IsError)
+        if (_repository.ExistsById(request.CustomerId) is false)
             return Errors.Customer.NotFound;
         
-        if (_repository.ExistsByPhone(request.PhoneNumber))
+        if (_repository.ExistsByPhone(request.Phone))
             return Errors.Customer.DuplicatedPhone;
 
         var customer = new Domain.Entities.Customer()
         {
             Id = request.CustomerId,
-            Phone    = request.PhoneNumber,
+            Phone    = request.Phone,
             FirstName = request.FirstName,
             LastName = request.LastName
         };
