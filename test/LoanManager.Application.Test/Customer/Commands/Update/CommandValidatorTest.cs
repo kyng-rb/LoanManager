@@ -1,4 +1,5 @@
 using FluentAssertions;
+using FluentValidation.TestHelper;
 using LoanManager.Application.Customer.Commands.Update;
 using LoanManager.Application.Test.Customer.Commands.Common;
 
@@ -24,13 +25,12 @@ public class CommandValidatorTest : BaseHandler
         };
 
         // act
-        var sut = await _validator.ValidateAsync(command);
+        var sut = await _validator.TestValidateAsync(command);
 
         // assert
-        sut.Should().NotBeNull();
-        sut.IsValid.Should().BeFalse();
-        sut.Errors.Count.Should().Be(1);
-        sut.Errors.First().ErrorMessage.Should().Be(InvalidIdentifierMessage);
+        sut.ShouldHaveAnyValidationError();
+        sut.ShouldHaveValidationErrorFor(x => x.CustomerId)
+            .WithErrorMessage(InvalidIdentifierMessage);
     }
     
     [Fact]
