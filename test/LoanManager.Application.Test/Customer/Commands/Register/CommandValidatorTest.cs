@@ -1,14 +1,12 @@
-using Bogus;
 using FluentAssertions;
 using LoanManager.Application.Customer.Commands.Register;
 using LoanManager.Application.Test.Customer.Commands.Common;
 
 namespace LoanManager.Application.Test.Customer.Commands.Register;
 
-public class CommandValidatorTest
+public class CommandValidatorTest : BaseHandler
 {
     private readonly CommandValidator _validator = new();
-    private readonly Faker _faker = new();
 
     private const string RequiredPhoneNumberMessage = "Phone Number is required.";
     private const string InvalidPhoneNumberLengthMessage = "PhoneNumber must have 8 characters.";
@@ -43,7 +41,7 @@ public class CommandValidatorTest
             Phone = string.Empty
         };
         
-        var expectedErrorMessages = new string[]
+        var expectedErrorMessages = new []
         {
             RequiredPhoneNumberMessage,
             InvalidPhoneNumberFormatMessage,
@@ -79,7 +77,7 @@ public class CommandValidatorTest
         sut.Should().NotBeNull();
         sut.IsValid.Should().BeFalse();
         sut.Errors.Count.Should().Be(1);
-        sut.Errors.First(x =>
+        _ = sut.Errors.First(x =>
             x.ErrorMessage.Equals(InvalidPhoneNumberFormatMessage, StringComparison.InvariantCultureIgnoreCase));
     }
     
@@ -92,7 +90,7 @@ public class CommandValidatorTest
             Phone = _faker.Phone.PhoneNumber("####")
         };
 
-        var expectedErrorMessages = new string[]
+        var expectedErrorMessages = new []
         {
             InvalidPhoneNumberFormatMessage,
             InvalidPhoneNumberLengthMessage

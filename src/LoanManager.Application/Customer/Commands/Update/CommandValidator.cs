@@ -7,8 +7,7 @@ public class CommandValidator : AbstractValidator<Command>
     public CommandValidator()
     {
         RuleFor(x => x.CustomerId)
-            .NotEmpty().WithMessage("Customer Id is required.")
-            .LessThanOrEqualTo(0).WithMessage("Invalid Customer Id value");
+            .GreaterThan(0).WithMessage("Invalid Customer Id value");
         
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("FirstName is required.");
