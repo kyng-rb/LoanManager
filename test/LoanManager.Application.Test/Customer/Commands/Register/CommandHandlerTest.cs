@@ -1,3 +1,4 @@
+using AutoFixture;
 using FluentAssertions;
 using LoanManager.Application.Customer.Commands.Register;
 using LoanManager.Application.Test.Customer.Commands.Common;
@@ -26,7 +27,7 @@ public class CommandHandlerTest : BaseHandler
     {
         // arrange
         GivenCustomerExistsPhoneNumberRepository();
-        var command = CommandFaker.RegisterCommand();
+        var command = _fixture.Create<Command>();
         
         // act
         var sut = await _handler.Handle(command, default);
@@ -38,12 +39,12 @@ public class CommandHandlerTest : BaseHandler
     }
 
     [Fact]
-    public async Task Should_Succeed_With_Valid_Input()
+    public async Task Should_Succeed_With_Not_Found_Customer_PhoneNumber()
     {
         // arrange
         GivenCustomerNotExistsByPhoneNumberRepository();
         GivenCustomerAddRepository();
-        var command = CommandFaker.RegisterCommand();
+        var command = _fixture.Create<Command>();
 
         // act
         var sut = await _handler.Handle(command, default);
