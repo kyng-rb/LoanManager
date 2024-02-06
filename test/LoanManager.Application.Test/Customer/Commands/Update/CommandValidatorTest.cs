@@ -22,7 +22,6 @@ public class CommandValidatorTest : BaseHandler
         var sut = await _validator.TestValidateAsync(command);
 
         // assert
-        sut.ShouldHaveAnyValidationError();
         sut.ShouldHaveValidationErrorFor(x => x.CustomerId)
             .WithErrorMessage(InvalidIdentifierMessage)
             .Only();
@@ -41,7 +40,6 @@ public class CommandValidatorTest : BaseHandler
         var sut = await _validator.TestValidateAsync(command);
 
         // assert
-        sut.ShouldHaveAnyValidationError();
         sut.ShouldHaveValidationErrorFor(x => x.FirstName)
             .WithErrorMessage(RequiredFirstNameMessage)
             .Only();
@@ -60,7 +58,6 @@ public class CommandValidatorTest : BaseHandler
         var sut = await _validator.TestValidateAsync(command);
 
         // assert
-        sut.ShouldHaveAnyValidationError();
         sut.ShouldHaveValidationErrorFor(x => x.Phone)
             .WithErrorMessage(RequiredPhoneNumberMessage);
         sut.ShouldHaveValidationErrorFor(x => x.Phone)
@@ -82,7 +79,6 @@ public class CommandValidatorTest : BaseHandler
         var sut = await _validator.TestValidateAsync(command);
 
         // assert
-        sut.ShouldHaveAnyValidationError();
         sut.ShouldHaveValidationErrorFor(x => x.Phone)
             .WithErrorMessage(InvalidPhoneNumberFormatMessage)
             .Only();
@@ -101,7 +97,6 @@ public class CommandValidatorTest : BaseHandler
         var sut = await _validator.TestValidateAsync(command);
 
         // assert
-        sut.ShouldHaveAnyValidationError();
         sut.ShouldHaveValidationErrorFor(x => x.Phone)
             .WithErrorMessage(InvalidPhoneNumberFormatMessage);
         sut.ShouldHaveValidationErrorFor(x => x.Phone)
