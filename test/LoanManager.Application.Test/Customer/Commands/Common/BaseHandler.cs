@@ -7,6 +7,13 @@ namespace LoanManager.Application.Test.Customer.Commands.Common;
 
 public abstract class BaseHandler
 {
+    
+    protected const string InvalidPhoneNumberLengthMessage = "PhoneNumber must have 8 characters.";
+    protected const string RequiredFirstNameMessage = "FirstName is required.";
+    protected const string InvalidPhoneNumberFormatMessage = "PhoneNumber must have the following format ########";
+    protected const string RequiredPhoneNumberMessage = "Phone Number is required.";
+    protected const string InvalidIdentifierMessage = "Invalid Customer Id value";
+    
     protected readonly Faker _faker = new ();
     protected readonly Fixture _fixture = new();
     protected readonly Mock<ICustomerRepository> _customerRepositoryMock = new (MockBehavior.Strict);
