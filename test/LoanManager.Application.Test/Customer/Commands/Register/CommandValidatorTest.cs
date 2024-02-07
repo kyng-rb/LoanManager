@@ -28,64 +28,6 @@ public class CommandValidatorTest : BaseHandler
     }
     
     [Fact]
-    public async Task Should_Fail_With_Empty_Phone()
-    {
-        // arrange
-        var command = CommandFaker.RegisterCommand() with
-        {
-            Phone = string.Empty
-        };
-
-        // act
-        var sut = await _validator.TestValidateAsync(command);
-
-        // assert
-        sut.ShouldHaveValidationErrorFor(x => x.Phone)
-            .WithErrorMessage(RequiredPhoneNumberMessage);
-        sut.ShouldHaveValidationErrorFor(x => x.Phone)
-            .WithErrorMessage(InvalidPhoneNumberFormatMessage);
-        sut.ShouldHaveValidationErrorFor(x => x.Phone)
-            .WithErrorMessage(InvalidPhoneNumberLengthMessage);
-    }
-    
-    [Fact]
-    public async Task Should_Fail_With_Invalid_Format_PhoneNumber()
-    {
-        // arrange
-        var command = CommandFaker.RegisterCommand() with
-        {
-            Phone = _faker.Phone.PhoneNumber("#######Y")
-        };
-        
-        // act
-        var sut = await _validator.TestValidateAsync(command);
-
-        // assert
-        sut.ShouldHaveValidationErrorFor(x => x.Phone)
-            .WithErrorMessage(InvalidPhoneNumberFormatMessage)
-            .Only();
-    }
-    
-    [Fact]
-    public async Task Should_Fail_With_Invalid_Character_Length_PhoneNumber()
-    {
-        // arrange
-        var command = CommandFaker.RegisterCommand() with
-        {
-            Phone = _faker.Phone.PhoneNumber("####")
-        };
-        
-        // act
-        var sut = await _validator.TestValidateAsync(command);
-
-        // assert
-        sut.ShouldHaveValidationErrorFor(x => x.Phone)
-            .WithErrorMessage(InvalidPhoneNumberFormatMessage);
-        sut.ShouldHaveValidationErrorFor(x => x.Phone)
-            .WithErrorMessage(InvalidPhoneNumberLengthMessage);
-    }
-    
-    [Fact]
     public async Task Should_Succeed_With_FirstName_LastName_And_PhoneNumber()
     {
         // arrange

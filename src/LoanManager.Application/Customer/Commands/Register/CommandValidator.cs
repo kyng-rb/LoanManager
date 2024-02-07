@@ -10,6 +10,6 @@ public class CommandValidator: AbstractValidator<Command>
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("FirstName is required.");
 
-        RuleFor(x => x.Phone).PhoneMustHaveNicaraguanFormat();
+        RuleFor(x => x.Phone).SetValidator(new NicaraguaPhoneNumberValidator());
     }
 }
