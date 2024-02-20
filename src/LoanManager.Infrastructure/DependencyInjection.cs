@@ -1,12 +1,10 @@
-using LoanManager.Application.Common.Interfaces.Authentication;
-using LoanManager.Application.Common.Interfaces.Persistence;
-using LoanManager.Application.Common.Interfaces.Services;
+using System.Reflection;
 using LoanManager.Infrastructure.Persistence;
-using LoanManager.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Scrutor;
 
 namespace LoanManager.Infrastructure;
 
@@ -16,10 +14,14 @@ public static class DependencyInjection
                                                                      ConfigurationManager configuration)
     {
         services.AddDatabase(configuration);
-
-        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-        services.AddSingleton<IUserRepository, UserRepository>();
-        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+        
+        services.Scan(selector => selector
+            .FromAssemblies(
+                Assembly.GetExecutingAssembly())
+            .AddClasses()
+            .UsingRegistrationStrategy(RegistrationStrategy.Throw)
+            .AsMatchingInterface()
+            .WithScopedLifetime());
 
         return services;
     }
