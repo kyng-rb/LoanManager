@@ -6,14 +6,10 @@ using MediatR;
 
 namespace LoanManager.Application.Customer.Commands.Update;
 
-public class CommandHandler : IRequestHandler<Command, ErrorOr<CommandResult>>
+public class CommandHandler(ICustomerRepository repository)
+    : IRequestHandler<Command, ErrorOr<CommandResult>>
 {
-    private readonly ICustomerRepository _repository;
-
-    public CommandHandler(ICustomerRepository repository)
-    {
-        _repository = repository;
-    }
+    private readonly ICustomerRepository _repository = repository;
 
     public async Task<ErrorOr<CommandResult>> Handle(Command request, CancellationToken cancellationToken)
     {
@@ -25,17 +21,17 @@ public class CommandHandler : IRequestHandler<Command, ErrorOr<CommandResult>>
         if (_repository.ExistsByPhone(request.Phone))
             return Errors.Customer.DuplicatedPhone;
 
-        var customer = new Domain.Entities.Customer()
+        var customer = new Domain.Entities.Customer
         {
-            Id = request.CustomerId,
             Phone    = request.Phone,
             FirstName = request.FirstName,
-            LastName = request.LastName
+            LastName = request.LastName,
+            Id = request.CustomerId
         };
-        
+
         _repository.Update(customer);
 
-        var result = new CommandResult(customer);
+        var result = new CommandResult(Common.Customer.FromEntity(customer));
         return result;
     }
 }

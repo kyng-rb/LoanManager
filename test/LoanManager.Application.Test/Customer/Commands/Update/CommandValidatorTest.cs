@@ -52,7 +52,7 @@ public class CommandValidatorTest : BaseHandler
         var command = CommandFaker.UpdateCommand();
         
         // act
-        var sut = await _validator.TestValidateAsync(command, default);
+        var sut = await _validator.TestValidateAsync(command);
 
         // assert
         sut.ShouldNotHaveAnyValidationErrors();

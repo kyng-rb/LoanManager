@@ -4,7 +4,6 @@ using LoanManager.Application.Authentication.Common;
 using LoanManager.Application.Common.Interfaces.Authentication;
 using LoanManager.Application.Common.Interfaces.Persistence;
 using LoanManager.Domain.Common.Errors;
-using LoanManager.Domain.Entities;
 
 using MediatR;
 
@@ -25,7 +24,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, ErrorOr<Authenticat
     {
         await Task.CompletedTask;
 
-        if (_userRepository.GetUserByEmail(query.Email) is not User user)
+        if (_userRepository.GetUserByEmail(query.Email) is not { } user)
             return Errors.Authentication.InvalidCredentials;
 
         if (user.Password != query.Password)

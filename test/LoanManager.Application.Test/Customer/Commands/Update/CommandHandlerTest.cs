@@ -10,7 +10,7 @@ namespace LoanManager.Application.Test.Customer.Commands.Update;
 public class CommandHandlerTest : BaseHandler
 {
     private readonly CommandHandler _handler;
-    
+
     public CommandHandlerTest()
     {
         _handler = new CommandHandler(_customerRepositoryMock.Object);

@@ -14,7 +14,7 @@ public class RegisterCommandValidatorTest
         //arrange
         var registerCommand = RegisterCommandFaker.Fake() with
         {
-            FirstName = String.Empty,
+            FirstName = String.Empty
         };
 
         //act
@@ -50,7 +50,7 @@ public class RegisterCommandValidatorTest
         //arrange
         var registerCommand = RegisterCommandFaker.Fake() with
         {
-            Password = String.Empty,
+            Password = String.Empty
         };
 
         //act
