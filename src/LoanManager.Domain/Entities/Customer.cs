@@ -5,10 +5,7 @@ namespace LoanManager.Domain.Entities;
 public class Customer : Auditable
 {
     public int Id { get; set; }
-    public string FirstName { get; init; } = null!;
+    public required string FirstName { get; init; }
     public string? LastName { get; init; }
-    public string? Phone { get; init; }
-    public int UserId { get; set; }
-
-    public User? User { get; set; }
+    public required string Phone { get; init; }
 }

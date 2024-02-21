@@ -7,29 +7,21 @@ using MediatR;
 
 namespace LoanManager.Application.Common.PipelineBehaviors;
 
-public class ValidationPipelineBehavior<TRequest, TResponse> :
+public class ValidationPipelineBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null) :
     IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
-//where TResponse : IErrorOr
 {
-    private readonly IValidator<TRequest>? _validator;
-
-    public ValidationPipelineBehavior(IValidator<TRequest>? validator = null)
-    {
-        _validator = validator;
-    }
-
     public async Task<TResponse> Handle(
         TRequest request,
         CancellationToken cancellationToken,
         RequestHandlerDelegate<TResponse> next)
     {
-        if (_validator == null)
+        if (validator == null)
         {
             return await next();
         }
 
-        ValidationResult? validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        ValidationResult? validationResult = await validator.ValidateAsync(request, cancellationToken);
 
         return validationResult.IsValid
                    ? await next()

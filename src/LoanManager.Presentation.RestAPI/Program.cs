@@ -1,7 +1,6 @@
 using LoanManager.Application;
 using LoanManager.Infrastructure;
 using LoanManager.Presentation.RestAPI.Extensions;
-using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 

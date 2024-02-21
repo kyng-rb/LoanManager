@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManager.Application", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{E8C925CB-A3AC-4C18-BF9B-37E41A5E7F4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManager.Application.Tests", "test\LoanManager.Application.Tests\LoanManager.Application.Tests.csproj", "{000B1297-7BC8-4CFB-B83C-0455CF03D80A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManager.Application.Test", "test\LoanManager.Application.Test\LoanManager.Application.Test.csproj", "{000B1297-7BC8-4CFB-B83C-0455CF03D80A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManager.Presentation.RestAPI", "src\LoanManager.Presentation.RestAPI\LoanManager.Presentation.RestAPI.csproj", "{DACAE57D-C96D-4C89-894B-4369A8C16469}"
 EndProject
