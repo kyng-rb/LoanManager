@@ -15,7 +15,7 @@ public class CommandHandler(ICustomerRepository repository)
     {
         await Task.CompletedTask;
         
-        if (_repository.ExistsById(request.CustomerId) is false)
+        if (!_repository.ExistsById(request.CustomerId))
             return Errors.Customer.NotFound;
         
         if (_repository.ExistsByPhone(request.Phone))

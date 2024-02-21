@@ -452,4 +452,4 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-src/LoanManager.Presentation.API/appsettings.Development.json
+*/appsettings.Development.json
