@@ -5,5 +5,5 @@ public enum TransactionType
     Loan,
     Payment,
     FreezeInterest,
-    FixedInterest,
+    FixedInterest
 }
