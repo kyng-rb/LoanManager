@@ -1,3 +1,4 @@
+using LoanManager.Domain.CustomerAggregate;
 using LoanManager.Domain.Entities.Bases;
 using LoanManager.Domain.Enums;
 
@@ -17,10 +18,10 @@ public class Loan : Auditable
     public float InterestRate { get; init; }
     public DateOnly Date { get; init; }
     public int CustomerId { get; init; }
-    public int OwnerId { get; init; }
+    public int UserId { get; init; }
 
     public virtual ICollection<Transaction>? Transactions { get; set; }
     public virtual ICollection<Withhold>? Withholds { get; set; }
     public virtual Customer Customer { get; set; } = null!;
-    public virtual Customer Owner { get; set; } = null!;
+    public virtual User Owner { get; set; } = null!;
 }

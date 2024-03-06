@@ -2,6 +2,7 @@ using AutoFixture;
 using FluentAssertions;
 using LoanManager.Application.Customer.Queries.Retrieve;
 using LoanManager.Application.Test.Customer.Commands.Common;
+using LoanManager.Domain.CustomerAggregate.Specifications;
 using Moq;
 
 namespace LoanManager.Application.Test.Customer.Commands.Query;
@@ -16,27 +17,27 @@ public class QueryHandlerTest
         _queryHandler = new QueryHandler(_customerRepositoryMock.Object);
     }
 
-    private void GivenCustomerRepositoryGet() =>
+    private void Given_Empty_CustomerRepository() =>
         _customerRepositoryMock
-            .Setup(x => x.Get(It.IsAny<string>()))
-            .Returns(Array.Empty<Domain.Entities.Customer>());
+            .Setup(x => x.ListAsync(It.IsAny<CustomerSearch>(), default))
+            .ReturnsAsync(Array.Empty<Domain.CustomerAggregate.Customer>().ToList());
 
-    private void GivenCustomerRepositoryGetWithMatches()
+    private void Given_With_Matches_CustomerRepository()
     {
-        var customers = _fixture.Create<Domain.Entities.Customer[]>();
+        var customers = _fixture.Create<List<Domain.CustomerAggregate.Customer>>();
 
-        _customerRepositoryMock.Setup(x => x.Get(It.IsAny<string>()))
-            .Returns(customers);
+        _customerRepositoryMock.Setup(x => x.ListAsync(It.IsAny<CustomerSearch>(), default))
+            .ReturnsAsync(customers);
     }
 
-    private void ThenCustomerRepositoryGetWasCalled() =>
-        _customerRepositoryMock.Verify(x => x.Get(It.IsAny<string>()), Times.Once);
+    private void Then_List_CustomerRepository_Was_Called() =>
+        _customerRepositoryMock.Verify(x => x.ListAsync(It.IsAny<CustomerSearch>(), default), Times.Once);
     
     [Fact]
     public async Task Should_Succeed_With_Not_Matches()
     {
         // arrange
-        GivenCustomerRepositoryGet();
+        Given_Empty_CustomerRepository();
         var queryRequest = _fixture.Create<Application.Customer.Queries.Retrieve.Query>();
         
         // act
@@ -45,14 +46,14 @@ public class QueryHandlerTest
         // assert
         sut.IsError.Should().BeFalse();
         sut.Value.Customers.Should().BeEmpty();
-        ThenCustomerRepositoryGetWasCalled();
+        Then_List_CustomerRepository_Was_Called();
     }
     
     [Fact]
     public async Task Should_Succeed_With_Matches()
     {
         // arrange
-        GivenCustomerRepositoryGetWithMatches();
+        Given_With_Matches_CustomerRepository();
         var queryRequest = _fixture.Create<Application.Customer.Queries.Retrieve.Query>();
         
         // act
@@ -61,6 +62,6 @@ public class QueryHandlerTest
         // assert
         sut.IsError.Should().BeFalse();
         sut.Value.Customers.Should().NotBeEmpty();
-        ThenCustomerRepositoryGetWasCalled();
+        Then_List_CustomerRepository_Was_Called();
     }
 }

@@ -14,6 +14,7 @@ public static class DependencyInjection
                                                                      ConfigurationManager configuration)
     {
         services.AddDatabase(configuration);
+        services.AddScoped(typeof(GenericRepository<>));
         
         services.Scan(selector => selector
             .FromAssemblies(
@@ -30,14 +31,16 @@ public static class DependencyInjection
                                                   ConfigurationManager configuration)
     {
         const string databaseConnection = "Postgres";
-
+        var connectionString = configuration.GetConnectionString(databaseConnection);
+        
         services.AddDbContext<DatabaseContext>(
                                                options =>
                                                    options
-                                                       .UseNpgsql(configuration.GetConnectionString(databaseConnection))
+                                                       .UseNpgsql(connectionString)
                                                        .LogTo(Console.WriteLine, LogLevel.Information)
                                                        .EnableSensitiveDataLogging()
                                                        .EnableDetailedErrors()
+                                               , ServiceLifetime.Singleton
                                               );
         return services;
     }

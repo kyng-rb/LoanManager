@@ -1,10 +1,9 @@
-using LoanManager.Domain.Entities.Bases;
+using LoanManager.Domain.Aggregate;
 
-namespace LoanManager.Domain.Entities;
+namespace LoanManager.Domain.CustomerAggregate;
 
-public class Customer : Auditable
+public class Customer : BaseAggregate
 {
-    public int Id { get; set; }
     public required string FirstName { get; init; }
     public string? LastName { get; init; }
     public required string Phone { get; init; }
