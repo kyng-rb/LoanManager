@@ -5,7 +5,7 @@ using FluentAssertions;
 using LoanManager.Application.Authentication.Commands.Register;
 using LoanManager.Application.Test.Authentication.Common;
 using LoanManager.Application.Test.Common.Mocks.Persistence;
-using LoanManager.Domain.Entities;
+using LoanManager.Domain.UserAggregate;
 
 namespace LoanManager.Application.Test.Authentication.Commands;
 

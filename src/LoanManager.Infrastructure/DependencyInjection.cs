@@ -1,4 +1,5 @@
 using System.Reflection;
+using Ardalis.Specification;
 using LoanManager.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,7 @@ public static class DependencyInjection
                                                                      ConfigurationManager configuration)
     {
         services.AddDatabase(configuration);
-        services.AddScoped(typeof(GenericRepository<>));
+        services.AddScoped(typeof(IRepositoryBase<>), typeof(GenericRepository<>));
         
         services.Scan(selector => selector
             .FromAssemblies(
@@ -40,7 +41,7 @@ public static class DependencyInjection
                                                        .LogTo(Console.WriteLine, LogLevel.Information)
                                                        .EnableSensitiveDataLogging()
                                                        .EnableDetailedErrors()
-                                               , ServiceLifetime.Singleton
+                                              , ServiceLifetime.Singleton
                                               );
         return services;
     }

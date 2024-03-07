@@ -1,8 +1,7 @@
-namespace LoanManager.Domain.Enums;
+namespace LoanManager.Domain.TransactionAggregate.Enums;
 
 public enum TransactionType
 {
-    Loan,
     Payment,
     FreezeInterest,
     FixedInterest

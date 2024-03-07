@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LoanManager.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240226234444_InitialMigration")]
+    [Migration("20240307210731_Initial Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -20,12 +20,12 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("LoanManager.Domain.Entities.Customer", b =>
+            modelBuilder.Entity("LoanManager.Domain.CustomerAggregate.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -42,6 +42,9 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
@@ -61,7 +64,7 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("LoanManager.Domain.Entities.Loan", b =>
+            modelBuilder.Entity("LoanManager.Domain.LoanAggregate.Loan", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,6 +93,9 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
                     b.Property<float>("InterestRate")
                         .HasColumnType("real");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -108,7 +114,7 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
                     b.ToTable("Loans");
                 });
 
-            modelBuilder.Entity("LoanManager.Domain.Entities.Transaction", b =>
+            modelBuilder.Entity("LoanManager.Domain.TransactionAggregate.Transaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -136,6 +142,9 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
 
                     b.Property<decimal>("InterestRemaining")
                         .HasColumnType("numeric");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("LoanId")
                         .HasColumnType("integer");
@@ -165,7 +174,7 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
                     b.ToTable("Transactions");
                 });
 
-            modelBuilder.Entity("LoanManager.Domain.Entities.User", b =>
+            modelBuilder.Entity("LoanManager.Domain.UserAggregate.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -187,6 +196,9 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -206,7 +218,7 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("LoanManager.Domain.Entities.Withhold", b =>
+            modelBuilder.Entity("LoanManager.Domain.WithHoldAggregate.Withhold", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -219,6 +231,9 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
 
                     b.Property<int>("CreatedBy")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("LoanId")
                         .HasColumnType("integer");
@@ -239,15 +254,15 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
                     b.ToTable("Withholds");
                 });
 
-            modelBuilder.Entity("LoanManager.Domain.Entities.Loan", b =>
+            modelBuilder.Entity("LoanManager.Domain.LoanAggregate.Loan", b =>
                 {
-                    b.HasOne("LoanManager.Domain.Entities.Customer", "Customer")
+                    b.HasOne("LoanManager.Domain.CustomerAggregate.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LoanManager.Domain.Entities.User", "Owner")
+                    b.HasOne("LoanManager.Domain.UserAggregate.User", "Owner")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -258,9 +273,9 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("LoanManager.Domain.Entities.Transaction", b =>
+            modelBuilder.Entity("LoanManager.Domain.TransactionAggregate.Transaction", b =>
                 {
-                    b.HasOne("LoanManager.Domain.Entities.Loan", "Loan")
+                    b.HasOne("LoanManager.Domain.LoanAggregate.Loan", "Loan")
                         .WithMany("Transactions")
                         .HasForeignKey("LoanId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -269,9 +284,9 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
                     b.Navigation("Loan");
                 });
 
-            modelBuilder.Entity("LoanManager.Domain.Entities.Withhold", b =>
+            modelBuilder.Entity("LoanManager.Domain.WithHoldAggregate.Withhold", b =>
                 {
-                    b.HasOne("LoanManager.Domain.Entities.Loan", "Loan")
+                    b.HasOne("LoanManager.Domain.LoanAggregate.Loan", "Loan")
                         .WithMany("Withholds")
                         .HasForeignKey("LoanId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -280,7 +295,7 @@ namespace LoanManager.Infrastructure.Persistence.Migrations
                     b.Navigation("Loan");
                 });
 
-            modelBuilder.Entity("LoanManager.Domain.Entities.Loan", b =>
+            modelBuilder.Entity("LoanManager.Domain.LoanAggregate.Loan", b =>
                 {
                     b.Navigation("Transactions");
 

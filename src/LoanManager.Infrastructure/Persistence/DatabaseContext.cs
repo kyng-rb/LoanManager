@@ -1,6 +1,8 @@
 using LoanManager.Domain.CustomerAggregate;
-using LoanManager.Domain.Entities;
-
+using LoanManager.Domain.LoanAggregate;
+using LoanManager.Domain.TransactionAggregate;
+using LoanManager.Domain.UserAggregate;
+using LoanManager.Domain.WithHoldAggregate;
 using Microsoft.EntityFrameworkCore;
 
 namespace LoanManager.Infrastructure.Persistence;

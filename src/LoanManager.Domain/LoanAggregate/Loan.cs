@@ -1,10 +1,13 @@
+using LoanManager.Domain.Aggregate;
 using LoanManager.Domain.CustomerAggregate;
-using LoanManager.Domain.Entities.Bases;
-using LoanManager.Domain.Enums;
+using LoanManager.Domain.LoanAggregate.Enums;
+using LoanManager.Domain.TransactionAggregate;
+using LoanManager.Domain.UserAggregate;
+using LoanManager.Domain.WithHoldAggregate;
 
-namespace LoanManager.Domain.Entities;
+namespace LoanManager.Domain.LoanAggregate;
 
-public class Loan : Auditable
+public class Loan : BaseAggregate
 {
     public Loan()
     {
@@ -12,7 +15,6 @@ public class Loan : Auditable
         Withholds = new HashSet<Withhold>();
     }
 
-    public int Id { get; init; }
     public Currency Currency { get; init; }
     public decimal Amount { get; init; }
     public float InterestRate { get; init; }
