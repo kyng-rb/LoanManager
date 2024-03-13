@@ -1,5 +1,5 @@
 using LoanManager.Application.Common.Interfaces.Persistence;
-using LoanManager.Domain.Entities;
+using LoanManager.Domain.UserAggregate;
 
 namespace LoanManager.Infrastructure.Persistence;
 

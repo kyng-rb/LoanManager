@@ -11,7 +11,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
     {
-        services.AddMediatR(typeof(DependencyInjection).Assembly);
+        services.AddMediatR(Assembly.GetExecutingAssembly());
         services.AddSingleton(
                            typeof(IPipelineBehavior<,>),
                            typeof(LoggingBehavior<,>));

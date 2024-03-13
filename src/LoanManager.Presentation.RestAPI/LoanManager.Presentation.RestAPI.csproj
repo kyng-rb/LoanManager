@@ -17,4 +17,10 @@
         <ProjectReference Include="..\LoanManager.Infrastructure\LoanManager.Infrastructure.csproj"/>
         <ProjectReference Include="..\LoanManager.Presentation.Contracts\LoanManager.Presentation.Contracts.csproj"/>
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
 </Project>

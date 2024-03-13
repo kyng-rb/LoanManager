@@ -1,4 +1,4 @@
-using LoanManager.Domain.Entities;
+using LoanManager.Domain.UserAggregate;
 
 namespace LoanManager.Application.Common.Interfaces.Persistence;
 

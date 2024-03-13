@@ -1,6 +1,5 @@
 using LoanManager.Application.Common.Interfaces.Authentication;
-using LoanManager.Domain.Entities;
-
+using LoanManager.Domain.UserAggregate;
 using Moq;
 
 namespace LoanManager.Application.Test.Authentication.Common;

@@ -1,6 +1,7 @@
+using Ardalis.Specification;
 using AutoFixture;
 using Bogus;
-using LoanManager.Application.Common.Interfaces.Persistence;
+using LoanManager.Domain.CustomerAggregate.Specifications;
 using Moq;
 
 namespace LoanManager.Application.Test.Customer.Commands.Common;
@@ -16,24 +17,23 @@ public abstract class BaseHandler
     
     protected readonly Faker _faker = new ();
     protected readonly Fixture _fixture = new();
-    protected readonly Mock<ICustomerRepository> _customerRepositoryMock = new (MockBehavior.Strict);
+    protected readonly Mock<IRepositoryBase<Domain.CustomerAggregate.Customer>> _customerRepositoryMock = new (MockBehavior.Strict);
     
-    protected void GivenCustomerNotExistsByPhoneNumberRepository() 
+    protected void Given_Not_Found_By_PhoneNumber_CustomerRepository() 
         => _customerRepositoryMock
-            .Setup(x => x.ExistsByPhone(It.IsAny<string>())).Returns(false);
+            .Setup(x => x.AnyAsync(It.IsAny<CustomerByPhoneNumber>(), default)).ReturnsAsync(false);
     
-    protected void GivenCustomerExistsPhoneNumberRepository() 
-        => _customerRepositoryMock.Setup(x => x.ExistsByPhone(It.IsAny<string>())).Returns(true);
+    protected void Given_Found_By_PhoneNumber_CustomerRepository()
+        => _customerRepositoryMock
+        .Setup(x => x.AnyAsync(It.IsAny<CustomerByPhoneNumber>(), default)).ReturnsAsync(true);
     
-    protected void GivenCustomerNotFoundRepository()
-    {
-        _customerRepositoryMock
-            .Setup(x => x.ExistsById(It.IsAny<int>())).Returns(false);
-    }
+    protected void Given_Not_Found_By_Id_CustomerRepository()
+        => _customerRepositoryMock
+            .Setup(x => x.AnyAsync(It.IsAny<CustomerById>(), default)).ReturnsAsync(false);
     
-    protected void ThenExistsByPhoneWasCalled() 
-        => _customerRepositoryMock.Verify(x => x.ExistsByPhone(It.IsAny<string>()), Times.Once);
+    protected void Then_Any_By_Phone_Was_Called() 
+        => _customerRepositoryMock.Verify(x => x.AnyAsync(It.IsAny<CustomerByPhoneNumber>(), default), Times.Once);
     
-    protected void ThenExistsByIdWasCalled() 
-        => _customerRepositoryMock.Verify(x => x.ExistsById(It.IsAny<int>()), Times.Once);
+    protected void Then_Any_By_Id_Was_Called() 
+        => _customerRepositoryMock.Verify(x => x.AnyAsync(It.IsAny<CustomerById>(), default), Times.Once);
 }
