@@ -4,8 +4,7 @@ using LoanManager.Application.Authentication.Common;
 using LoanManager.Application.Common.Interfaces.Authentication;
 using LoanManager.Application.Common.Interfaces.Persistence;
 using LoanManager.Domain.Common.Errors;
-using LoanManager.Domain.Entities;
-
+using LoanManager.Domain.UserAggregate;
 using MediatR;
 
 namespace LoanManager.Application.Authentication.Commands.Register;

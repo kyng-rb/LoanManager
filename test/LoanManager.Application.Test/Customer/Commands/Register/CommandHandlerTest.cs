@@ -15,18 +15,21 @@ public class CommandHandlerTest : BaseHandler
     {
         _handler = new CommandHandler(_customerRepositoryMock.Object);
     }
+
+    private void Given_Add_CustomerRepository()
+        => _customerRepositoryMock
+            .Setup(x => x.AddAsync(It.IsAny<Domain.CustomerAggregate.Customer>(), default))
+            .ReturnsAsync((Domain.CustomerAggregate.Customer customer, CancellationToken token) => customer);
     
-    private void GivenCustomerAddRepository() 
-        => _customerRepositoryMock.Setup(x => x.Add(It.IsAny<Domain.Entities.Customer>()));
-    
-    private void ThenAddWasCalled() 
-        => _customerRepositoryMock.Verify(x => x.Add(It.IsAny<Domain.Entities.Customer>()), Times.Once);
+    private void Then_Add_CustomerRepository_Was_Called() 
+        => _customerRepositoryMock
+            .Verify(x => x.AddAsync(It.IsAny<Domain.CustomerAggregate.Customer>(), default), Times.Once);
     
     [Fact]
     public async Task Should_Fail_With_Duplicated_Phone()
     {
         // arrange
-        GivenCustomerExistsPhoneNumberRepository();
+        Given_Found_By_PhoneNumber_CustomerRepository();
         var command = _fixture.Create<Command>();
         
         // act
@@ -35,15 +38,15 @@ public class CommandHandlerTest : BaseHandler
         // assert
         sut.IsError.Should().BeTrue();
         sut.Errors.First().Should().Be(Errors.Customer.DuplicatedPhone);
-        ThenExistsByPhoneWasCalled();
+        Then_Any_By_Phone_Was_Called();
     }
 
     [Fact]
     public async Task Should_Succeed_With_Not_Found_Customer_PhoneNumber()
     {
         // arrange
-        GivenCustomerNotExistsByPhoneNumberRepository();
-        GivenCustomerAddRepository();
+        Given_Not_Found_By_PhoneNumber_CustomerRepository();
+        Given_Add_CustomerRepository();
         var command = _fixture.Create<Command>();
 
         // act
@@ -53,7 +56,7 @@ public class CommandHandlerTest : BaseHandler
         sut.IsError.Should().BeFalse();
         sut.Value.Customer.Should().NotBeNull()
             .And.BeEquivalentTo(command);
-        ThenExistsByPhoneWasCalled();
-        ThenAddWasCalled();
+        Then_Any_By_Phone_Was_Called();
+        Then_Add_CustomerRepository_Was_Called();
     }
 }

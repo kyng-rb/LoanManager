@@ -1,11 +1,11 @@
-using LoanManager.Domain.Entities.Bases;
-using LoanManager.Domain.Enums;
+using LoanManager.Domain.Aggregate;
+using LoanManager.Domain.LoanAggregate;
+using LoanManager.Domain.TransactionAggregate.Enums;
 
-namespace LoanManager.Domain.Entities;
+namespace LoanManager.Domain.TransactionAggregate;
 
-public class Transaction : Auditable
+public class Transaction : BaseAggregate
 {
-    public int Id { get; init; }
     public int LoanId { get; init; }
     public DateOnly Date { get; init; }
     public TransactionType Type { get; init; }

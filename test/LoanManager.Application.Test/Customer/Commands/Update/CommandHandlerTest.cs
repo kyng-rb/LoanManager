@@ -3,6 +3,7 @@ using FluentAssertions;
 using LoanManager.Application.Customer.Commands.Update;
 using LoanManager.Application.Test.Customer.Commands.Common;
 using LoanManager.Domain.Common.Errors;
+using LoanManager.Domain.CustomerAggregate.Specifications;
 using Moq;
 
 namespace LoanManager.Application.Test.Customer.Commands.Update;
@@ -16,21 +17,24 @@ public class CommandHandlerTest : BaseHandler
         _handler = new CommandHandler(_customerRepositoryMock.Object);
     }
 
-    private void GivenCustomerFoundRepository() 
-        => _customerRepositoryMock.Setup(x => x.ExistsById(It.IsAny<int>()))
-            .Returns(true);
+    private void Given_Found_ById_CustomerRepository() 
+        => _customerRepositoryMock
+            .Setup(x => x.AnyAsync(It.IsAny<CustomerById>(), default)).ReturnsAsync(true);
 
-    private void GivenCustomerUpdateRepository()
-        => _customerRepositoryMock.Setup(x => x.Update(It.IsAny<Domain.Entities.Customer>()));
+    private void Given_Update_CustomerRepository()
+        => _customerRepositoryMock
+            .Setup(x => x.UpdateAsync(It.IsAny<Domain.CustomerAggregate.Customer>(), default))
+            .Returns(Task.CompletedTask);
     
-    private void ThenCustomerUpdateWasCalled()
-        => _customerRepositoryMock.Verify(x => x.Update(It.IsAny<Domain.Entities.Customer>()), Times.Once);
+    private void Then_Update_CustomerRepository_Was_Called()
+        => _customerRepositoryMock.Verify(x => x.UpdateAsync(It.IsAny<Domain.CustomerAggregate.Customer>(), default), Times
+        .Once);
 
     [Fact]
     public async Task Should_Fail_With_Customer_Not_Found()
     {
         // arrange
-        GivenCustomerNotFoundRepository();
+        Given_Not_Found_By_Id_CustomerRepository();
         var command = _fixture.Create<Command>();
         
         // act
@@ -40,15 +44,15 @@ public class CommandHandlerTest : BaseHandler
         sut.IsError.Should().BeTrue();
         sut.Errors.Count.Should().Be(1);
         sut.Errors.First().Should().Be(Errors.Customer.NotFound);
-        ThenExistsByIdWasCalled();
+        Then_Any_By_Id_Was_Called();
     }
     
     [Fact]
     public async Task Should_Fail_With_Found_Customer_And_Already_Used_Phone()
     {
         // arrange
-        GivenCustomerExistsPhoneNumberRepository();
-        GivenCustomerFoundRepository();
+        Given_Found_By_PhoneNumber_CustomerRepository();
+        Given_Found_ById_CustomerRepository();
         var command = _fixture.Create<Command>();
         
         // act
@@ -58,17 +62,17 @@ public class CommandHandlerTest : BaseHandler
         sut.IsError.Should().BeTrue();
         sut.Errors.Count.Should().Be(1);
         sut.Errors.First().Should().Be(Errors.Customer.DuplicatedPhone);
-        ThenExistsByIdWasCalled();
-        ThenExistsByPhoneWasCalled();
+        Then_Any_By_Id_Was_Called();
+        Then_Any_By_Phone_Was_Called();
     }
     
     [Fact]
     public async Task Should_Succeed_With_Found_User_And_Not_Used_PhoneNumber()
     {
         // arrange
-        GivenCustomerFoundRepository();
-        GivenCustomerNotExistsByPhoneNumberRepository();
-        GivenCustomerUpdateRepository();
+        Given_Found_ById_CustomerRepository();
+        Given_Not_Found_By_PhoneNumber_CustomerRepository();
+        Given_Update_CustomerRepository();
         var command = _fixture.Create<Command>();
 
         // act
@@ -78,12 +82,12 @@ public class CommandHandlerTest : BaseHandler
         sut.IsError.Should().BeFalse();
         sut.Value.Customer.Should().NotBeNull()
             .And.BeEquivalentTo(command, option
-                => option.WithMapping<Domain.Entities.Customer>(
+                => option.WithMapping<Domain.CustomerAggregate.Customer>(
                     s => s.CustomerId,
                     x => x.Id));
         
-        ThenExistsByIdWasCalled();
-        ThenExistsByPhoneWasCalled();
-        ThenCustomerUpdateWasCalled();
+        Then_Any_By_Id_Was_Called();
+        Then_Any_By_Phone_Was_Called();
+        Then_Update_CustomerRepository_Was_Called();
     }
 }

@@ -1,16 +1,14 @@
-using LoanManager.Domain.Entities;
-
+using LoanManager.Domain.CustomerAggregate;
+using LoanManager.Domain.LoanAggregate;
+using LoanManager.Domain.TransactionAggregate;
+using LoanManager.Domain.UserAggregate;
+using LoanManager.Domain.WithHoldAggregate;
 using Microsoft.EntityFrameworkCore;
 
 namespace LoanManager.Infrastructure.Persistence;
 
-public class DatabaseContext : DbContext
+public class DatabaseContext(DbContextOptions<DatabaseContext> options) : DbContext(options)
 {
-    public DatabaseContext(DbContextOptions<DatabaseContext> options)
-    : base(options)
-    {
-    }
-
     public virtual DbSet<Customer> Customers => Set<Customer>();
     public virtual DbSet<User> Users => Set<User>();
     public virtual DbSet<Loan> Loans => Set<Loan>();
